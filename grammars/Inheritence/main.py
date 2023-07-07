@@ -1,5 +1,6 @@
 class Human:
     def __init__(self, name):
+        print("initailize now!")
         self.name = name
 
     def say_hello(self):
@@ -11,15 +12,17 @@ class Human:
 
 class Player(Human):
     def __init__(self, name, xp):
+        super().__init__(name)
         self.xp = xp
 
 
 class Fan(Human):
     def __init__(self, name, fan_name):
+        super().__init__(name)
         self.fan_name = fan_name
 
 
 kPlayer = Player("kim", 1000)
 kPlayer.say_hello()
-nico_fan = Fan("nico_fan", dontknow)
+nico_fan = Fan("nico_fan", "dontknow")
 nico_fan.say_hello()
