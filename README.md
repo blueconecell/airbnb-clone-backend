@@ -1,6 +1,8 @@
 # airbnb-clone-backend
 
-> ### #3.0 Run Server (04:57)
+<details>
+<summary> #3.0 Run Server (04:57)
+</summary>
 
 **서버 키는 법**
 airbnb-clone-backend 폴더 위치 아래에서 `python manage.py runserver` 명령어를 터미널에서 실행해준다.
@@ -8,7 +10,12 @@ airbnb-clone-backend 폴더 위치 아래에서 `python manage.py runserver` 명
 **서버 닫는 법**
 `Ctrl + C`로 중지한다.
 
-> ### #3.1 Migrations (07:16)
+</details>
+
+<details>
+<summary>
+#3.1 Migrations (07:16)
+</summary>
 
 **admin page**
 /admin/ 페이지로 가려함.
@@ -29,3 +36,5 @@ airbnb-clone-backend 폴더 위치 아래에서 `python manage.py runserver` 명
 - /admin/ 페이지 로그인 시 로그인 오류화면을 볼 수 있음
 
 ![Alt text](img/3.png)
+
+</details>
