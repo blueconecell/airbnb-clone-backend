@@ -45,6 +45,7 @@ airbnb-clone-backend 폴더 위치 아래에서 터미널을 킨 후 `poetry she
 #3.2 Recap (04:57)
 </summary>
 
+**migration**
 migration 파일에는 DB를 변화시킬 수 있는 python 코드가 들어있다.
 이중에는 `auth-user`파일이 있을 것이다. 유저 저장 테이블이다.
 
@@ -55,6 +56,7 @@ migration 파일에는 DB를 변화시킬 수 있는 python 코드가 들어있�
 #3.3 Super User (07:24)
 </summary>
 
+**관리자 페이지**
 터미널을 하나 더 열고 `django` 가상환경으로 들어가준 뒤 `python manage.py createsuperuser`를 실행한다.
 
 비밀번호 설정 시 유효성 검사를 자동으로 해줌을 볼 수 있다.
@@ -80,5 +82,22 @@ migration 파일에는 DB를 변화시킬 수 있는 python 코드가 들어있�
 config폴더의 setting.py 파일의 내용을 수정함으로써 사용자의 코드에 맞춰 웹페이지의 내용이 바뀌는 것을 볼 수 있다.
 ![Alt text](img/6.png)
 (프레임워크의 특징이다)
+
+</details>
+
+<details>
+<summary>
+#3.5 Apps (07:14)
+</summary>
+
+**장고의 프로젝트는 application들로 이루어져 있다**
+
+Airbnb를 예시로 든다.
+
+(`room`)숙소 정보와 (`user`)숙소 주인정보나 고객정보를 위한 로직을 같은 파일에 두지 않고 따로 둘 것이다.
+
+`room`을 업로드하고 수정하고 삭제하는 등의 로직과 정보를 DB에 저장하고 변경사항을 적용해야한다.
+
+`user`들이 소통하고 본인의 숙소페이지를 관리하고 본인의 예약정보를 관리하고, DB에 정보를 저장하고 변경사항을 적용해야한다.
 
 </details>
