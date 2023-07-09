@@ -5,7 +5,8 @@
 </summary>
 
 **서버 키는 법**
-airbnb-clone-backend 폴더 위치 아래에서 `python manage.py runserver` 명령어를 터미널에서 실행해준다.
+airbnb-clone-backend 폴더 위치 아래에서 터미널을 킨 후 `poetry shell`로 `django` 가상환경을 켜준다.
+그 다음 `python manage.py runserver` 명령어를 터미널에서 실행해준다.
 
 **서버 닫는 법**
 `Ctrl + C`로 중지한다.
@@ -36,5 +37,15 @@ airbnb-clone-backend 폴더 위치 아래에서 `python manage.py runserver` 명
 - /admin/ 페이지 로그인 시 로그인 오류화면을 볼 수 있음
 
 ![Alt text](img/3.png)
+
+</details>
+
+<details>
+<summary>
+#3.2 Recap (04:57)
+</summary>
+
+migration 파일에는 DB를 변화시킬 수 있는 python 코드가 들어있다.
+이중에는 `auth-user`파일이 있을 것이다. 유저 저장 테이블이다.
 
 </details>
