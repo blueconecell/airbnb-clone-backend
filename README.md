@@ -138,3 +138,54 @@ config폴더의 `setting.py`파일에 `INSTALLED_APPS`에 우리가 만든 어�
 `"houses.apps.HousesConfig"` 추가하기
 
 </details>
+
+<details>
+<summary>
+#4.1 Migrations (11:55)
+</summary>
+
+**Migrations**
+
+django는 자동으로 admin 패널을 우리의 데이터로 생성해준다.
+
+house폴더 아래에 있는 `admin.py`파일에 다음코드를 추가해준다.
+
+```python
+@admin.register(House)
+class HouseAdmin(admin.ModelAdmin):
+    pass
+```
+
+House라는 모델을 추가해주는 것을 볼 수 있다.
+
+![Alt text](img/8.png)
+
+하지만 눌러보면 table이 없다는 오류가 뜬다.
+
+직접 migration을 함으로써 table을 만들어 줄 수 있다.
+
+새로운 터미널을 열고 django가상환경상태에 진입한 후, `python manage.py makemigrations` 명령어를 입력한다.
+
+![Alt text](img/9.png)
+
+house 폴더 아래에 migration 폴더가 생겼고, 그 안에 '0001_initial.py'파일이 생겼다.
+
+![Alt text](img/10.png)
+
+변경된 데이터베이스를 적용하기 위해 `python manage.py migrate` 명령어를 입력해준다.
+
+![Alt text](img/11.png)
+
+그러면 이제 Houses를 눌렀을 때 migrate한 데이터베이스가 보인다.
+
+![Alt text](img/12.png)
+
+'ADD HOUSE' 버튼을 눌러 예전에 미리 설정해두었던 db자료형에 맞춰 내용을 추가할 수 있다.
+
+![Alt text](img/13.png)
+
+Houses에 내용물을 하나 추가하고 서버를 껐다키면 전에 추가했었던 내용이 살아있는 것을 확인할 수 있다.
+
+![Alt text](img/14.png)
+
+</details>
