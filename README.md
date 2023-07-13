@@ -189,3 +189,26 @@ Houses에 내용물을 하나 추가하고 서버를 껐다키면 전에 추가�
 ![Alt text](img/14.png)
 
 </details>
+
+<details>
+<summary>#4.2 Recap (10:49)</summary>
+
+기존에 설치된 앱과 새로만들어 추가한 앱을 분리하여 따로 합쳐준다.
+
+`INSTALLED_APPS = SYSTEM_APPS + CUSTOM_APPS`
+
+migration을 테스트해보기위해 house폴더 아래에 있는 `models.py`에서 'price'를 'price_per_night'로 바꾼 후 변경사항을 적용시키기 위해 migration을 해준다.
+
+![Alt text](img/15.png)
+
+migration폴더 아래에 새로운 파이썬 파일이 생기고 변경사항이 기록된다.
+
+![Alt text](img/16.png)
+
+변경사항을 `python manage.py makemigrations`로 등록해주고, `python manage.py migrate`로 적용해준다.
+
+![Alt text](img/17.png)
+
+적용된 모습이다.
+
+</details>
