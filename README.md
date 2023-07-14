@@ -212,3 +212,45 @@ migration폴더 아래에 새로운 파이썬 파일이 생기고 변경사항�
 적용된 모습이다.
 
 </details>
+
+<details>
+<summary>#4.3 Admin (13:08)</summary>
+
+**admin 패널 추가설정하기**
+
+admin패널에 들어가면 Houses 클래스로부터 만들어진 항목의 이름이 'House object(1)' 로 보인다.
+
+model.py에서 House클래스에 `__str__()` 메소드를 수정해줌으로써 우리가 원하는 형태로 보이게 할 수 있다.
+
+```
+    def __str__(self):
+        return self.name
+```
+
+admin.py에서 `list_display=[]`에 데이터 속성이름을 적어주면 해당 속성들을 미리보기 가능하다.
+
+```
+    list_display = [
+        "name",
+        "price_per_night",
+        "address",
+        "pets_allowed",
+    ]
+```
+
+`list_filter=[]`를 추가해주면 오른쪽에 필터목록을 볼 수 있다.
+
+![Alt text](img/18.png)
+
+```
+    list_filter = [
+        "price_per_night",
+        "pets_allowed",
+    ]
+```
+
+`    search_fields = ["address"]`이 코드를 추가 함으로써 주소를 기준으로 검색할 수 있는 검색창이 생긴다.
+
+`"address_startwith"`를 집어넣으면 검색키워드로 시작하는 것만 뜨고, 그냥 `"address"`만 넣으면 키워드가 중간에 들어있어도 모두 검색된다.
+
+</details>
