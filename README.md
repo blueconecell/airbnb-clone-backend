@@ -254,3 +254,16 @@ admin.py에서 `list_display=[]`에 데이터 속성이름을 적어주면 해�
 `"address_startwith"`를 집어넣으면 검색키워드로 시작하는 것만 뜨고, 그냥 `"address"`만 넣으면 키워드가 중간에 들어있어도 모두 검색된다.
 
 </details>
+
+<details>
+<summary>#4.4 Documentation (13:33)</summary>
+
+**Documentation**
+
+[장고문서](https://docs.djangoproject.com/en/4.2/ref/models/fields/)
+
+Documents를 통해 admin패널에서 도움말, 데이터 이름, 데이터 숨기기, 리스트상태에서 수정가능하게 하기 등등의 많은 기능을 적은 코드로 사용할 수 있다.
+
+It's insane~
+
+</details>
