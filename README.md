@@ -320,4 +320,25 @@ It's insane~
 
 유저가 분리되어 보인다. 이전에는 Groups와 같이 있었다.
 
-    </details>
+</details>
+
+<details>
+<summary>#5.2 Custom Fields (06:23)</summary>
+
+**Custom User Model**
+
+파이썬 코드에 있는 모델 구조와 DB구조를 서로 동기화 하기 위해 추가작업(기본값 넣어주기 등의 작업)을 해줘야 한다.
+
+만약 'is_host'필드에 기본값을 지정해주지 않고 `python manage.py makemigrations`를 해주면 동기화를 위한 오류를 발생시킬 것이다.
+
+![Alt text](img/21.png)
+
+추가한 'is_host' 필드는 기본값없이 Nill 값으로 추가가 불가능하다는 오류이다.
+
+옵션1. 일회성 기본값제공하기. 하지만 기존 행들의 이 열 값들이 모두 null값이 된다.
+
+옵션2. 이 작업을 중지하고 models.py에서 기본값을 지정해준다.
+
+2번을 선택하여 추가작업을 해줄 것이다.
+
+</details>
