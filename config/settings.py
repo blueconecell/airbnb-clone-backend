@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 CUSTOM_APPS = [
     "houses.apps.HousesConfig",
+    "users.apps.UsersConfig",
 ]
 
 
@@ -128,3 +129,9 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Auth
+
+# 커스터마이징한 유저를 django에게 인지시키기
+AUTH_USER_MODEL = "users.User"

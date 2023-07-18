@@ -271,10 +271,53 @@ It's insane~
 <details>
 <summary>#5.0 Introduction (11:52)</summary>
 
-**User Applications 환경설정**
+**User Applications 환경설정\_0**
 
 인터프리트 설정을 poetry환경으로 잡아준다.
 
 그러면 django 임포트할때 밑에 경고물결줄이 안뜬다.
 
 </details>
+
+<details>
+<summary>#5.1 Custom Model (13:53)</summary>
+
+**User Applications 환경설정\_1**
+
+[Documents Link](https://docs.djangoproject.com/en/4.2/topics/auth/customizing/#substituting-a-custom-user-model)
+
+`python manage.py startapp users`로 새로운 커스텀 유저를 만들어준다.
+
+기존 유저의 모든 것을 상속받아야함.
+
+1.  `AbstractUser`의 모든 것을 상속받은 `User`를 커스터마이징하고,
+
+2.  커스터마이징한 `User`를 Django에게 사용하겠다고 인지시켜야한다.
+
+    2-1. 링크에서 추가해야하는 코드를 `setting.py`에 추가한다.
+
+    2-2. user application을 설치해야하므로 `CUSTOM_APPS`에 추가해준다.
+
+    2-3. 커스텀 USER를 만들었는데 이미 옛날에 만들어둔 USER와 충돌을 일으키기 때문에 서버를 끄고 DB를 삭제해준다. "db.sqlite3"을 삭제한다. 서버 재실행해준다.
+
+    2-4. 그리고 houses에 있는 migrations 파일도 지워준다.(0001\_.... 이렇게 생긴 파일들). (폴더와 `__init__.py` 파일은 살려둠)
+
+    2-5. `python manage.py makemigrations`를 해준다.
+
+    ![Alt text](img/19.png)
+
+    2-6. `python manage.py migrate`로 새정보로 업데이트해주고, 동기화된다.
+
+3.  user모델을 admin패널에 추가한다.
+
+    3.1 users폴더에 admin.py에 내용을 추가해준다.
+
+    3.2 다시 페이지를 리로드하면 로그인을 다시해야하는데, DB를 지웠기 때문에 세션이 종료된 것이고, user로 새로 생성해 줘야한다.
+
+    따라서 `python manage.py createsuperuser`로 user계정을 새로 만들어준다.
+
+![Alt text](img/20.png)
+
+유저가 분리되어 보인다. 이전에는 Groups와 같이 있었다.
+
+    </details>
