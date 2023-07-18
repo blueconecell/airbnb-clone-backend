@@ -267,3 +267,14 @@ Documents를 통해 admin패널에서 도움말, 데이터 이름, 데이터 숨
 It's insane~
 
 </details>
+
+<details>
+<summary>#5.0 Introduction (11:52)</summary>
+
+**User Applications 환경설정**
+
+인터프리트 설정을 poetry환경으로 잡아준다.
+
+그러면 django 임포트할때 밑에 경고물결줄이 안뜬다.
+
+</details>
