@@ -342,3 +342,12 @@ It's insane~
 2번을 선택하여 추가작업을 해줄 것이다.
 
 </details>
+
+<details>
+<summary>#5.3 Defaults (11:04)</summary>
+
+**Adding Default**
+
+DB를 수정하여 기존에 있었던 필드가 사라지면 원래 있어야 할 것이 없어져서 오류가 발생한다.
+
+</details>
