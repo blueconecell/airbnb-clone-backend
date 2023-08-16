@@ -359,3 +359,12 @@ default 값이 필요한 필드에 default값을 넣어주고 makemigrations를 
 다음 강의에서 해결한다.
 
 </details>
+
+<details>
+<summary>#5.4 Custom Admin (08:34)</summary>
+
+**Admin pages modify**
+
+어드민 페이지를 수정하였다.
+
+</details>
