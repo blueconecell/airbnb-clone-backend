@@ -368,3 +368,40 @@ default 값이 필요한 필드에 default값을 넣어주고 makemigrations를 
 어드민 페이지를 수정하였다.
 
 </details>
+<details>
+<summary>#5.5 Foreign Keys (13:16)</summary>
+
+**유저 연동시키기(model연결시키기)**
+
+ForeignKey를 사용하여 사용자를 연결한다.
+
+만약 사용자가 지워지면 어떻게 처리할 것인지 정해주어야만 한다.
+
+NULL로 처리해줄 수 있다. 하지만 그 유저가 만든 house가 주인이 없는 채로 남아있으면 안됨으로 house도 같이 delete해주기 위한 CASCADE를 쓴다. `on_delete=models.CASCADE`
+
+그 다음 db.sqlite3과 migrations 폴더에 있는 파일들을 모두 지워준다.(`__init__.py` 빼고)
+
+초기화 해주는 과정이다.
+
+초기화가 되었기 때문에 makemigrations, migrate, createsuperuser를 다 해준다.(jeongyeon, 123)
+
+웹페이지에 들어가서 house에 추가를 해주면 아래에 새로운 필드가 생긴 것을 확인할 수 있다.
+
+![Alt text](img/23.png)
+
+박스를 클릭하면 사용자를 선택해줄 수 있다. 초기여서 '-----'와 'jeongyeon' 2개만 있다.
+
+house가 user의 ForeignKey를 가지고 있다고 알려주었기 때문에 models를 연결할 수 있었다.
+
+PositiveIntegerField를 사용하게되면 단순히 숫자를 저장하기만 한다. 하지만 ForeignKey를 사용하면 Django에게 참조하고 싶은 model을 알려줌으로써 연결을 해준다.
+
+</details>
+
+<details>
+<summary>#5.6 Super Mega Recap (16:07)</summary>
+
+**Admin pages modify**
+
+어드민 페이지를 수정하였다.
+
+</details>
