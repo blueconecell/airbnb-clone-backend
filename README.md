@@ -415,3 +415,9 @@ extensions에서 sqlite viewer를 설치하면 django의 sqlite db를 시각화�
 그다음 migration폴더에 있는 것도 지워서 초기화 해준다.
 
 </details>
+<details>
+<summary>#6.0 User Model (11:38)</summary>
+
+**최종 프로젝트에서 사용할 model만들기 > user모델 확장하기**
+
+</details>

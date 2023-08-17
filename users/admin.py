@@ -6,10 +6,26 @@ from .models import User
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     fieldsets = (
-        ("Profile",{"fields":("username","password", "name","email", "is_host"),
-        },
+        (
+            "Profile",
+            {
+                "fields": (
+                    "avatar",
+                    "username",
+                    "password",
+                    "name",
+                    "gender",
+                    "gender",
+                    "language",
+                    "currency",
+                    "email",
+                    "is_host",
+                ),
+            },
         ),
-        ("Permissions",{
+        (
+            "Permissions",
+            {
                 "fields": (
                     "is_active",
                     "is_staff",
@@ -17,10 +33,14 @@ class CustomUserAdmin(UserAdmin):
                     "groups",
                     "user_permissions",
                 ),
-                "classes":("collapse",),
+                "classes": ("collapse",),
             },
-            ),
-            ("Important Dates",{"fields": ("last_login", "date_joined"),
-            "classes":("collapse",),},),
+        ),
+        (
+            "Important Dates",
+            {
+                "fields": ("last_login", "date_joined"),
+                "classes": ("collapse",),
+            },
+        ),
     )
-
