@@ -400,8 +400,18 @@ PositiveIntegerField를 사용하게되면 단순히 숫자를 저장하기만 �
 <details>
 <summary>#5.6 Super Mega Recap (16:07)</summary>
 
-**Admin pages modify**
+**관계형DB를 Django에서 다루기**
 
-어드민 페이지를 수정하였다.
+사용자를 예시로 user테이블과 house테이블을 연결하였다.
+
+만약 user테이블에있는 user가 하나 사라진다면, 그 user와 연관된 house를 어떻게 처리할 것인지가 문제가 된다.
+
+house를 같이 삭제시키는 방법과 house의 user정보를 null로 만들어버리는 방법 2가지가 있다.
+
+extensions에서 sqlite viewer를 설치하면 django의 sqlite db를 시각화해서 볼 수 있다.
+
+다음에 model들을 생성할 것이기 때문에 house폴더를 삭제시켰다. 그리고 setting.py에서 custom_apps에 있는 house도 지워준다.
+
+그다음 migration폴더에 있는 것도 지워서 초기화 해준다.
 
 </details>
