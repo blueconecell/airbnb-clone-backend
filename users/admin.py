@@ -15,7 +15,6 @@ class CustomUserAdmin(UserAdmin):
                     "password",
                     "name",
                     "gender",
-                    "gender",
                     "language",
                     "currency",
                     "email",

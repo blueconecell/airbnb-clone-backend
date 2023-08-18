@@ -418,6 +418,8 @@ extensions에서 sqlite viewer를 설치하면 django의 sqlite db를 시각화�
 <details>
 <summary>#6.0 User Model (11:38)</summary>
 
-**최종 프로젝트에서 사용할 model만들기 > user모델 확장하기**
+**최종 프로젝트에서 사용할 model만들기**
+
+user 모델을 확장하였음
 
 </details>
