@@ -423,3 +423,15 @@ extensions에서 sqlite viewer를 설치하면 django의 sqlite db를 시각화�
 user 모델을 확장하였음
 
 </details>
+<details>
+<summary>#6.1 Room Model (07:08)</summary>
+
+**최종 프로젝트에서 사용할 model만들기**
+
+rooms 모델을 새로 만들어줌
+
+콘솔창에 `python manage.py startapp rooms`를 쳐서 새 모델을 만들어 주고, Config폴더에 있는 settings.py에 CUTSTOM_APPS에 `"rooms.apps.RoomsConfig",` 을 추가한다.
+
+many-to-many 것들을 위해 나머지는 다음강의에
+
+</details>
