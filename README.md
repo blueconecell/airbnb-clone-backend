@@ -481,4 +481,23 @@ class Meta:
 
 만든 rooms와 amenities를 웹상에서 확인해봄.
 
+db에서 직접 확인해보면 생성날짜 수정날짜도 확인할 수 있다.
+
+</details>
+<details>
+<summary>#6.4 Rooms Admin (12:49)</summary>
+
+**최종 프로젝트에서 사용할 model만들기**
+
+room과 amenity의 이름 수정
+
+그리고 Amenity모델을 자동으로 복수형으로 표시하는 django의 기능 중 Amenitys라고 잘못된 복수형을 다음 코드로 바로잡아준다.
+
+```(python)
+class Meta:
+    verbose_name_plural = "Amenities"
+```
+
+admin.py에서 목록에서 어떻게 보일지, 어떤 필터 적용기준으로 보여줄지 패널에서 시각화 할 수 있다.
+
 </details>
