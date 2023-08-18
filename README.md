@@ -474,3 +474,11 @@ class Meta:
 사용하기 위해서는 사용하고자 하는 모델에 임포트를 먼저 한 후 `from common.models import CommonModel` 시작할 때 modles.Model부분을 `CommonModel` 로 바꿔적어주면 된다.
 
 </details>
+<details>
+<summary>#6.3 Recap (08:00)</summary>
+
+**최종 프로젝트에서 사용할 model만들기**
+
+만든 rooms와 amenities를 웹상에서 확인해봄.
+
+</details>
