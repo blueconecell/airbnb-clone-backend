@@ -435,3 +435,42 @@ rooms 모델을 새로 만들어줌
 many-to-many 것들을 위해 나머지는 다음강의에
 
 </details>
+<details>
+<summary>#6.2 Many to Many (13:19)</summary>
+
+**최종 프로젝트에서 사용할 model만들기**
+
+many to many 의 의미를 알기 위해서는 Many to one, One to many의 의미를 알아야 한다.
+
+- room1, room2, room3 -> user1 (Many to one)
+
+- user1 -> room1, room2, room3 (One to many)
+
+Amenty model이 many to many relationship을 가진다.
+
+Amenity1, Amenity2, Amenity3 => room1, room2, room3
+
+그리고 반복을 피하기 위해서 생성된 날짜, 변경수정된 날짜를 저장하는 필드를 하나 만들어준다.
+
+여기서 `auto_now_add=True`를 해주게 되는데 처음 생성되었을 때 날짜를 넣어주는 기능이다.
+
+update는 `auto_now=True`를 넣어줘서 저장될 때마다 시간이 기록되게 한다.
+
+근데 여기서 만들고 있는 시간 저장기능은 다른곳에서도 똑같이 사용될 것이다. 그러면 반복적으로 같은 코드를 사용해줘야하는데 이 중복되는 것을 막기 위해서 새로운 application을 만들어줄 것이다.
+
+콘솔에 `python manage.py startapp common`으로 공통 코드를 위한 새 application을 만들어준다.
+
+이 새로 만들어준 common모델에는 추상모델을 만들어준다. 이 모델은 db에 추가하지 않고 다른 모델에서 재사용하기 위한 모델이다. 이것은 blueprint같은 모델이다.
+
+만들어준 common 모델에 아래부분에
+
+```(python)
+class Meta:
+    abstract = True
+```
+
+을 적어준다면 django는 이 모델에 대해서 쓸모없는 db를 만들어내지 않는다.
+
+사용하기 위해서는 사용하고자 하는 모델에 임포트를 먼저 한 후 `from common.models import CommonModel` 시작할 때 modles.Model부분을 `CommonModel` 로 바꿔적어주면 된다.
+
+</details>
