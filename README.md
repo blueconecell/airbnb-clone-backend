@@ -501,3 +501,10 @@ class Meta:
 admin.py에서 목록에서 어떻게 보일지, 어떤 필터 적용기준으로 보여줄지 패널에서 시각화 할 수 있다.
 
 </details>
+<details>
+<summary>#6.5 Experiences (12:27)</summary>
+
+**최종 프로젝트에서 사용할 model만들기**
+experience창 만들기
+
+</details>
