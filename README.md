@@ -508,3 +508,11 @@ admin.py에서 목록에서 어떻게 보일지, 어떤 필터 적용기준으�
 experience창 만들기
 
 </details>
+
+<details>
+<summary>#6.6 Categories (11:02)</summary>
+
+**최종 프로젝트에서 사용할 model만들기**
+category 연결 만들기
+
+</details>
