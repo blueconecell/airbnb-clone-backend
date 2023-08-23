@@ -516,3 +516,10 @@ experience창 만들기
 category 연결 만들기
 
 </details>
+<details>
+<summary>#6.7 Reviews (08:28)</summary>
+
+**최종 프로젝트에서 사용할 model만들기**
+review 테이블만들기
+
+</details>
