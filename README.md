@@ -530,3 +530,16 @@ review 테이블만들기
 wishlist 만들기
 
 </details>
+
+<details>
+<summary>#6.9 Bookings (14:42)</summary>
+
+**최종 프로젝트에서 사용할 model만들기**
+booking 만들기
+
+-> rooms, experiences 2개 모두 예약할 수 있는 booking기능을 만들 것이다. 2개중 선택을 할 수 있도록 choice클래스를 하나 만들어준다.
+
+booking에서 check_in, check_out을 만들어 줄 때에는 DB에 시간을 포함하여 저장할 것인지 날짜만 저장할 것인지를 우리가 정하여 만들어줘야 한다.(여기서는 날짜만 저장하기로 함)
+
+</details>
+
