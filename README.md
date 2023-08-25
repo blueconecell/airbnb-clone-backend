@@ -542,4 +542,12 @@ booking 만들기
 booking에서 check_in, check_out을 만들어 줄 때에는 DB에 시간을 포함하여 저장할 것인지 날짜만 저장할 것인지를 우리가 정하여 만들어줘야 한다.(여기서는 날짜만 저장하기로 함)
 
 </details>
+<details>
+<summary>#6.10 Medias (10:11)</summary>
 
+**최종 프로젝트에서 사용할 model만들기**
+Media 만들기
+
+OneToOneField를 만들었는데 고유한 것을 연결할 때 사용하였다.(드물게 사용함)
+
+</details>
