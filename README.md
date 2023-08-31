@@ -565,3 +565,35 @@ application이름은 해당 모델의 폴더 아래에 app.py에서 name을 수�
 admin패널에서 추가적으로 문자 개수, 채팅방에 참여하고있는 사람수, 개시한 방에 평점 등의 추가적인 속성을 넣어줄 수 있을 것이다.
 
 </details>
+<details>
+<summary>#7.0 Introduction (10:58)</summary>
+
+**Django의 ORM**
+
+콘솔창에서 shell로 db와 소통할 것이다.
+
+`python manage.py shell`
+
+models를 통해 db에 접근한다.
+
+db에 있는 모든 room찾기
+
+`from rooms.models import room`
+
+`Room.objects.all()`
+
+어떠한 속성으로도 찾을 수 있다.
+
+`Room.objects.get(name="서울집")`
+
+.get 뿐만아니라 .create, .filter도 있다
+
+`room = Room.objects.get(name="서울집")`
+
+처럼 변수에 저장하고
+
+`room.created_at`,`room.name`,`room.id`등의 명령어를 입력할 수 있다.
+
+`room.price = 2000`으로 하고 `room.save()`를 하게되면 db가 업데이트된다.
+
+</details>
