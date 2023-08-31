@@ -594,6 +594,6 @@ db에 있는 모든 room찾기
 
 `room.created_at`,`room.name`,`room.id`등의 명령어를 입력할 수 있다.
 
-`room.price = 2000`으로 하고 `room.save()`를 하게되면 db가 업데이트된다.
+`room.price = 2000`으로 하고 `room.save()`를 하게되면 db가 업데이트된다. 심지어 updated_at에 시간이 반영된다. 하지만 국제표준시간 기준이여서 9시간 느리게 보인다.
 
 </details>
