@@ -597,3 +597,44 @@ db에 있는 모든 room찾기
 `room.price = 2000`으로 하고 `room.save()`를 하게되면 db가 업데이트된다. 심지어 updated_at에 시간이 반영된다. 하지만 국제표준시간 기준이여서 9시간 느리게 보인다.
 
 </details>
+
+<details>
+<summary>#7.1 filter, get, create, delete (14:10)</summary>
+
+**ORM 용어들**
+
+- `.get()` 특정한 object 하나만 찾고 싶을때
+
+  `Room.objects.get(pk=1)` primary key 1로 찾을때
+
+- `.filter()` 필터적용하여 가져오기
+
+  - `Room.objects.filter(pet_friendly=True)`
+    'pet_friendly'를 필터적용하여 가져오면 결과값 개수가 1개 이상이므로(0개가 나올 수 있음) `.filter()`를 사용해야한다. 만약 `.get()`을 사용하면 오류가 날 것이다.
+
+  - filter는 유용하다. '속성'+ '\_\_필터값' 형식으로 underscore를 이용한다.
+
+  - 부등호도 사용하다.
+
+  `Room.objects.filter(price__gt=15)`
+
+  - 검색어도 사용가능하다('seoul'이 들어간 방만 찾기 같은 행위)
+
+    `Room.objects.filter(name__contains="서울")`
+
+    `Room.objects.filter(name__startswith="서울")`
+
+- `.all()` 모든것을 보여줌
+
+- `.create()` db내용물 생성하기
+
+  괄호안에 속성값을 잘 넣어줘야한다.
+
+  `Amenity.objects.create(name="Amenity from the Console",  description="cool")`
+
+- `.delete()` 선택한 db값을 삭제할 수 있다.
+
+  `.get()`으로 삭제하고싶은 것을 고르고 삭제해준다.
+  `Amenity.objects.get(pk=4).delete()`
+
+  </details>
