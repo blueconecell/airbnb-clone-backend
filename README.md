@@ -551,3 +551,17 @@ Media 만들기
 OneToOneField를 만들었는데 고유한 것을 연결할 때 사용하였다.(드물게 사용함)
 
 </details>
+
+<details>
+<summary>#6.11 Direct Messages (15:21)</summary>
+
+**최종 프로젝트에서 사용할 model만들기**
+direct_messages 만들기
+
+dms로 이름지어도 되어서 그렇게 했음
+
+application이름은 해당 모델의 폴더 아래에 app.py에서 name을 수정함으로서 바꿀 수 있다.
+
+admin패널에서 추가적으로 문자 개수, 채팅방에 참여하고있는 사람수, 개시한 방에 평점 등의 추가적인 속성을 넣어줄 수 있을 것이다.
+
+</details>
