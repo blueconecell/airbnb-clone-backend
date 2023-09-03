@@ -706,9 +706,9 @@ def total_amenities(self):
 
 **foreignKey로 필터링하기**
 
-관계를 뒤집어서 접근하도록 하는 것.
+reverse accessors : 관계를 뒤집어서 접근하도록 하는 것.
 
-사용하는 이용 :
+사용하는 이용 : 반대방향으로 원하는 정보를 찾을 때
 
 room 모델은 user모델을 foreignKey로 포인팅하고 있다.
 
@@ -727,5 +727,27 @@ reverse란 user를 가리키고 있는 model을 찾기 위한 것. 반대방향�
 이런 기능이 반복적으로 많이 필요한 경우가 있다. 예를들어 인스타그램에서 creater가 사진을 올리는 기능이 있고 그 creater를 클릭하여 그사람이 올린 사진들을 보는 행위 reverse가 있는데 둘다 반복적으로 많이 쓰이는 기능이 될 것이다.
 
 room.owner.username은 가능하다. 방을 업로드한 유저의 이름을 보는 기능이다. 하지만 반대로 유저의 이름을 기준으로 그 유저가 올린 방을 모두 찾아보는 기능 user.rooms 이러한 기능은 만든적이 없다. reverse로 찾아야 하는 것이다. 하지만 코드를 손봐서 기능을 만들어 줄 수 있다.
+
+</details>
+<details>
+<summary>#7.5 Reverse Accessors (11:27)</summary>
+
+**Reverse Accessors**
+
+콘솔에서 User를 임포트해와서 pk=1을 me라는 변수에 저장하자.
+
+`dir(me)`를 통해 많은 메소드와 속성을 볼 수 있다.
+
+`~_set`이라는 것이 많다. 이것이 reverse accessors이다.
+
+`me.room_set.all()`을 입력하면 해당 유저의 모든 room을 보여준다.
+
+새로운 유저를 만들어주자. (admin, adminpw1234) 방하나를 admin의 방으로 바꿔준다.
+
+다시 명령어를 입력하면 방이 하나 없어져있다.
+
+규칙 : ForeignKey는 매번 `_set`속성을 받는다.
+
+review에서도 user와 연결시 ForeignKey를 사용했다. 따라서 `me.review_set`이 가능하다.
 
 </details>
