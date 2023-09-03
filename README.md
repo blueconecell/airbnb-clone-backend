@@ -751,3 +751,17 @@ room.owner.username은 가능하다. 방을 업로드한 유저의 이름을 보
 review에서도 user와 연결시 ForeignKey를 사용했다. 따라서 `me.review_set`이 가능하다.
 
 </details>
+<details>
+<summary>#7.6 related_name (07:47)</summary>
+
+**Reverse Accessors 이름 커스터마이징**
+
+A가 B에 대한 ForeignKey를 만들었다면 B는 A_set을 갖는다.
+
+`user.room_set()`을 더이상 하지않고 `user.rooms`을 하도록 만들려면 rooms의 models.py에서 Room 클래스의 owner설정에서 `related_name="rooms",`을 추가하면 된다.
+
+추가후 makemigrations, migrate을 해줘야 적용이 된다.(ORM shell콘솔도 껐다 켜준다.)
+
+ForeignKey뿐만 아니라 ManyToMany도 바꿔줄 수 있다. 바꿀 수 있는건 모두 바꿔준다.
+
+</details>
