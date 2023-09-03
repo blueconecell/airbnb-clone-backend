@@ -637,4 +637,26 @@ db에 있는 모든 room찾기
   `.get()`으로 삭제하고싶은 것을 고르고 삭제해준다.
   `Amenity.objects.get(pk=4).delete()`
 
+    </details>
+  <details>
+  <summary>#7.2 QuerySets (07:01)</summary>
+
+**QuerySets은 무엇인가**
+
+연산자를 함께 묶어주는 역할을 한다.
+
+filter 사용시 여러 속성을 ','로 묶어줄 수 있다.
+
+db와 소통하지 않고 db에 있는 모든 데이터를 몽땅 꺼내온다.
+
+QuerySet은 구체적으로 요청받을 때만 데이터를 제공할 것이다.
+
+명령을 즉시 실행시켜주지 않고 데이터를 요청할 때만 제공한다.
+
+1. 게으르기 때문에 db를 힘들게 하지 않는다.
+
+2. 서로다른 QuerySet들을 연결할 수 있다.
+
+all같은 db를 힘들게 할 수 있는 명령어를 실행한다면 db를 바로 다 보여주지 않고 QuerySet형태로 짧게 보여준다.
+
   </details>
