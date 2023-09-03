@@ -765,3 +765,14 @@ A가 B에 대한 ForeignKey를 만들었다면 B는 A_set을 갖는다.
 ForeignKey뿐만 아니라 ManyToMany도 바꿔줄 수 있다. 바꿀 수 있는건 모두 바꿔준다.
 
 </details>
+
+<details>
+<summary>#7.7 Recap (06:33)</summary>
+
+**Reverse Accessors 복습**
+
+이미 만들어 놓은 속성이나 메소드를 반대방향으로 호출하고 싶을 때 추가적으로 만들지 않고도 사용가능한 기능.
+
+related_name으로 이름을 바꿔줄 수 있다.
+
+</details>
