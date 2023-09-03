@@ -637,7 +637,8 @@ db에 있는 모든 room찾기
   `.get()`으로 삭제하고싶은 것을 고르고 삭제해준다.
   `Amenity.objects.get(pk=4).delete()`
 
-    </details>
+      </details>
+
   <details>
   <summary>#7.2 QuerySets (07:01)</summary>
 
@@ -659,4 +660,44 @@ QuerySet은 구체적으로 요청받을 때만 데이터를 제공할 것이다
 
 all같은 db를 힘들게 할 수 있는 명령어를 실행한다면 db를 바로 다 보여주지 않고 QuerySet형태로 짧게 보여준다.
 
-  </details>
+</details>
+
+<details>
+<summary>#7.3 Admin Methods (14:34)</summary>
+
+**lookup 무엇인가**
+
+"\_\_"연산자는 lookup연산자라고 부른다.
+
+[Documentation link](https://docs.djangoproject.com/en/4.1/ref/models/querysets/#field-lookups)
+
+QuerySet을 반환하는 메소드도 있고, 반환하지 않는 메소드도 있다.
+
+새로운 db 콘솔 지식을 통하여 admin 패널에서 더 많은 것을 할 수 있다.
+
+예를들면 .count()메소드를 통해 얼마나 많은 요소들이 있는지를 표시해줄 수 있다.
+
+`"total_amenities",`이 항목을 rooms의 admin.py에 추가할 것이다. 하지만 이것은 미리 만들어주지 않았기 때문에 오류가 발생한다.(Room클래스의 메소드로 찾아내려 한다.)
+
+2가지 방법이 있다.
+
+1. 직접 model에 메소드를 추가하기. ORM을 이용하는 방법이다.
+
+2. admin.py에 직접 메소드를 만들어주기. 메소드는 self뿐만 아니라 room도 매개변수로 갖게된다.
+
+1번방법은 room에 항상 total_amenities메소드가 따라다닐 것이다. room을 쓸때마다 total_amenities도 필요하다면 1번방법이 좋다. 2번방법은 관리자 패널에서만 확인할 수 있다. 다른곳에서는 전혀 필요없고, 관리자 패널에만 필요하다면 2번방법이 좋을 수 있다.
+
+```
+#(admin.py)
+def total_amenities(self, room):
+    return room.amenities.count()
+```
+
+```
+def total_amenities(self):
+    return self.amenities.count()
+```
+
+이렇게 해줌으로서 count()메소드로 amenities개수를 표현해줄 수 있다.
+
+</details>
