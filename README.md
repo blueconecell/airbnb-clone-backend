@@ -701,3 +701,31 @@ def total_amenities(self):
 이렇게 해줌으로서 count()메소드로 amenities개수를 표현해줄 수 있다.
 
 </details>
+<details>
+<summary>#7.4 ForeignKey Filter (11:33)</summary>
+
+**foreignKey로 필터링하기**
+
+관계를 뒤집어서 접근하도록 하는 것.
+
+사용하는 이용 :
+
+room 모델은 user모델을 foreignKey로 포인팅하고 있다.
+
+reverse란 user를 가리키고 있는 model을 찾기 위한 것. 반대방향으로 원하는 것을 찾아가는 것.
+
+예를 들어 room.owner은 room에서 user를 찾아내는 것이다. 근데 user에서 room을 찾아내는 방법, 이것이 reverse이다.
+
+`Room.objects.filter(owner__username="jeongyeon")`
+
+이런식으로 작성하면 해당 유저의 모든 room을 QuerySet으로 보여준다.
+
+`Room.objects.filter(owner__username__startswith="j")`
+
+이런것도 가능하다(~로 시작하는 것 찾기 필터)
+
+이런 기능이 반복적으로 많이 필요한 경우가 있다. 예를들어 인스타그램에서 creater가 사진을 올리는 기능이 있고 그 creater를 클릭하여 그사람이 올린 사진들을 보는 행위 reverse가 있는데 둘다 반복적으로 많이 쓰이는 기능이 될 것이다.
+
+room.owner.username은 가능하다. 방을 업로드한 유저의 이름을 보는 기능이다. 하지만 반대로 유저의 이름을 기준으로 그 유저가 올린 방을 모두 찾아보는 기능 user.rooms 이러한 기능은 만든적이 없다. reverse로 찾아야 하는 것이다. 하지만 코드를 손봐서 기능을 만들어 줄 수 있다.
+
+</details>
