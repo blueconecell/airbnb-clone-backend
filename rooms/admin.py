@@ -10,7 +10,10 @@ class RoomAdmin(admin.ModelAdmin):
         "kind",
         "total_amenities",
         "owner",
+        "category",
+        "rating",
         "created_at",
+
     )
     list_filter = (
         "country",

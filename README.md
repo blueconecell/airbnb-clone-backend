@@ -776,3 +776,24 @@ ForeignKey뿐만 아니라 ManyToMany도 바꿔줄 수 있다. 바꿀 수 있는
 related_name으로 이름을 바꿔줄 수 있다.
 
 </details>
+<details>
+<summary>#8.0 Methods (13:42)</summary>
+
+**검색기능**
+
+일단 room에서 review를 볼 수 있게 메소드를 하나 만든다. 프론트에서 보여줄 목적도 있다.
+
+```
+def rating(room):
+    return room.reviews.count()
+```
+
+이런식으로 ORM문법을 이용해 return값을 만들어준다.
+
+```
+for review in room.reviews.all().values("rating"):
+```
+
+for문으로 필요한 모든 리뷰를 불러올때 그냥 `.all()`을 해버리면 db가 고생을 한다. 따라서 뒤에 `.values("rating")`을 붙여서 필요한 값만 가져오도록 최적화를 해준 것이다.
+
+</details>
