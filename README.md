@@ -779,7 +779,7 @@ related_name으로 이름을 바꿔줄 수 있다.
 <details>
 <summary>#8.0 Methods (13:42)</summary>
 
-**검색기능**
+**리뷰 평균내서 보여주기**
 
 일단 room에서 review를 볼 수 있게 메소드를 하나 만든다. 프론트에서 보여줄 목적도 있다.
 
@@ -795,5 +795,43 @@ for review in room.reviews.all().values("rating"):
 ```
 
 for문으로 필요한 모든 리뷰를 불러올때 그냥 `.all()`을 해버리면 db가 고생을 한다. 따라서 뒤에 `.values("rating")`을 붙여서 필요한 값만 가져오도록 최적화를 해준 것이다.
+
+</details>
+<details>
+<summary>#8.1 Search Fields (07:41)</summary>
+
+**검색 필드**
+
+room의 admin.py에 
+```
+search_fields = ("name", "price",)
+```
+를 추가하게되면 admin패널의 room에서 검색필드가 생성된다.
+
+그리고 방의 이름이나 가격으로 방을 검색해볼 수 있다.
+
+이러면 기본적으로 검색한 내용이 우리가 선택한 항목에 있는지 확인한다.
+
+startswith 키워드는 앞에 `^`를 넣어주면 사용할 수 있다. (~로 시작하는 것 검색하기)
+
+```
+search_fields = ("^name", "^price",)
+```
+
+완전히 똑같은 것을 찾아주고 싶을 때는 `=`를 앞에 넣어주면 된다.
+
+```
+search_fields = ("=name", "=price",)
+```
+
+만약 사용자 이름으로 찾고 싶다면
+
+```
+search_fields = ("owner__username",)
+```
+
+이처럼 장고가 기본으로 제공하는 기능을 사용하여 만들어줄 수 있다.
+
+Foreign Key를 이용하여 검색하는 방식이다. owner는 room model의 한 요소로 user로부터 관계되는 값이다.
 
 </details>
