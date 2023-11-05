@@ -866,5 +866,84 @@ def reset_prices(modle_admin, request, rooms):
         room.price = 0
         room.save()
 ```
+</details>
+<details>
+<summary>#8.3 Custom Filters (16:19)</summary>
+
+
+**나만의 필터 만들기**
+
+admin.py에 클래스 내부에 `list_filter=(rating)`처럼 만들면 해당 필드명으로 필터를 만들 수 있었다.
+
+관계, Foreign Key로도 필터를 만들 수 있다. User로 만들어보자
+
+```
+    list_filter = (
+        "rating",
+        "user__is_host",
+        "room__amenities",
+        "room__pet_friendly",
+    )
+```
+
+이런식으로 Foreign Key로 관계를 통해 필터를 만들어 줄 수 있다.
+
+Foreign Key의 또 다른 Foreign Key로도 필터를 만들어줄 수 있다.
+
+리뷰에서 특정 단어를 포함하는 것만 보여주도록 필터를 만들어볼 수도 있다.
+
+```
+# SimpleListFilter를 상속받는다.
+class WordFilter(admin.SimpleListFilter):
+    # 필수 - 필터제목
+    title="Filter by words!"
+    # 필수 - URL에 뜨는 내용 'potato=어쩌구' 이렇게 URl에 나옴
+    parameter_name="potato"
+    # 필수 - 필터 내용이 어떤 것이 나와야하는지 Override되야하는 lookup method
+    # 튜플 리스트를 반환해야한다.
+    def lookups(self, request, model_admin):
+        # 두번째 튜플요소를 화면에 보여준다.
+        return [
+            ("good", "Good"),
+            ("oh", "Oh"),
+            ("wow","Wow")
+        ]
+    # 필터를 거친 결과물을 보여주는 메소드
+    def queryset(self, request, reviews):
+        # request에 GET을 사용할 것이다.
+        # 바뀐 url을 읽어서 값을 뽑아올 수도 있지만 self를 이용하여 값을 가져올 수 있다.
+        word = self.value()
+        if word:
+            # 리뷰 내용물에 word와 같은 값을 뽑아준다.
+            return reviews.filter(payload__contains = word)
+        else:
+            return reviews
+```
+
+이런식으로 직접 구현하여 단어가 들어있는지 여부로 필터를 만들어줄 수 있다.
+
+여기서 3점미만은 bad, 3점 이상은 good 리뷰인 것으로 판단해주는 필터를 만들어보자.
+
+```
+# 3점미만은 bad, 3점 이상은 good로 나눠주는 필터
+class good_or_bad(admin.SimpleListFilter):
+    title = "3점미만 = bad, 3점이상 = good"
+    parameter_name = "good_or_bad"
+    def lookups(self, request, model_admin):
+        return [
+            ("good","good"),
+            ("bad","bad"),
+        ]
+    def queryset(self, request, reviews):
+        feel = self.value()
+        if feel == 'good':
+            return reviews.filter(rating__gte = 3)
+        elif feel == 'bad':
+            return reviews.filter(rating__lt = 3)
+        else:
+            return reviews
+            
+```
+
 
 </details>
