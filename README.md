@@ -835,3 +835,36 @@ search_fields = ("owner__username",)
 Foreign Key를 이용하여 검색하는 방식이다. owner는 room model의 한 요소로 user로부터 관계되는 값이다.
 
 </details>
+
+<details>
+<summary>#8.2 Admin Actions (09:18)</summary>
+
+room을 삭제하려하면 장고는 연결된 관계같은 것들이 같이 삭제되거나 변경되는지 한눈에 보여주는 페이지를 띄워준다.
+
+**admin action 추가하기**
+
+admin action은 3개의 파라미터로 구성된다. 
+
+1. 액션을 호출하는 클래스 
+2. request객체
+3. queryset 선택한 모든 객체를 반환
+```
+@admin.action(description="Set all prices to zero")
+def reset_prices(modle_admin, request, queryset):
+    print(modle_admin)
+    print(dir(request))
+    print(queryset)
+```
+
+위와 같이 체크박스에 선택한 room들을 queryset을 출력하여 확인해 볼 수 있다.
+
+우리가 만들려는 기능은 선택한 방들의 가격을 0으로 바꾸는 것이다.
+
+```
+def reset_prices(modle_admin, request, rooms):
+    for room in rooms.all():
+        room.price = 0
+        room.save()
+```
+
+</details>
