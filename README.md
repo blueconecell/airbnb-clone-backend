@@ -945,5 +945,13 @@ class good_or_bad(admin.SimpleListFilter):
             
 ```
 
+</details>
+<details>
+<summary>#8.4 Recap (04:45)</summary>
+
+
+**Recap**
+
+검색창 필드 `search_fields`, 사용자 액션 `@admin.action`, 사용자 지정 필터 3가지를 만들어 보았다.
 
 </details>
