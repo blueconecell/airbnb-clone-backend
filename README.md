@@ -955,3 +955,43 @@ class good_or_bad(admin.SimpleListFilter):
 검색창 필드 `search_fields`, 사용자 액션 `@admin.action`, 사용자 지정 필터 3가지를 만들어 보았다.
 
 </details>
+<details>
+<summary>#9.0 Views (09:18)</summary>
+
+
+**Views**
+
+config 폴더의 urls.py파일에서 url로 접속하면 어떻게 어디로 보낼지를 정해줄 수 있다.
+
+view는 유저가 특정 url에 접근했을 때 작동하게되는 함수이다. 만들어 놓은 rooms, houses 등에 views.py가 하나씩 다있다.
+
+views.py를 url에 import해올 것이기 때문에 굳이 views라는 이름을 갖을 필요는 없다. 다른 이름으로 해도 된다.
+
+```
+# rooms > views.py
+from django.http import HttpResponse
+
+# Create your views here.
+def say_hello(request):
+    return HttpResponse("hi")
+```
+
+기본적으로 view에서 함수를 만들면 request를 파라미터로 만들어줘야한다.
+장고에서 기본적으로 제공하는 파라미터이기 때문이다. 
+
+```
+# url.py
+from django.contrib import admin
+from django.urls import path
+from rooms.views import say_hello
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('rooms', say_hello)
+]
+```
+
+이렇게 코드를 짠 후 `http://127.0.0.1:8000/rooms`로 접속하면 return 값인 hi가 출력된 것을 볼 수 있다.
+
+
+</details>
