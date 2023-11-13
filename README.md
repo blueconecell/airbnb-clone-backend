@@ -995,3 +995,29 @@ urlpatterns = [
 
 
 </details>
+<details>
+<summary>#9.1 Include (06:04)</summary>
+
+
+**URL들을 개별 파일로 만들 것이다.**
+
+rooms의 url을 분리된 파일로 바꿀 것이다.
+
+각 application의 url파일에 각 url들을 분리시켜줄 것이고 config로 묶어줄 것이다.
+
+urls.py에 include를 임포트 해온 뒤, 우리가 원하는 url 주소로 이동할 때 include를 통해 각 어플리케이션의 url파일로 이동하게 할 것이다.
+
+`path('rooms/', include("rooms.urls"))`
+
+```
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path("",views.say_hello),
+]
+```
+
+include를 통해 넘어가면 위처럼 세부 경로에 따라 어떤 화면을 view해줄지 정해줄 수 있게 된다. 지금은 room/ 까지만 만들어 둔 형태이다.
+
+</details>
