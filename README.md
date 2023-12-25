@@ -1021,3 +1021,21 @@ urlpatterns = [
 include를 통해 넘어가면 위처럼 세부 경로에 따라 어떤 화면을 view해줄지 정해줄 수 있게 된다. 지금은 room/ 까지만 만들어 둔 형태이다.
 
 </details>
+<details>
+<summary>#9.2 URL Arguments (07:12)</summary>
+
+
+**URL의 변수를 참조하자**
+
+`path("<int:room_id>",views.see_one_room)`
+
+꺽쇠 안에 `변수 자료형:변수명` 형식으로 써주면 url의 값을 변수로 사용할 수 있다. 여기서 int 자료형을 사용하였기 때문에 문자열을 url 뒤에 써주게 되면 오류를 자동으로 저료형 검사를 하여 띄워준다.
+
+사용하는 url `views.see_one_room` 함수에는 변수를 매개변수로 받아줘야한다.
+
+```
+def see_one_room(request,room_id):
+    return HttpResponse(f"see room with id: {room_id}")
+```
+
+</details>
