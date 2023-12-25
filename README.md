@@ -1039,3 +1039,24 @@ def see_one_room(request,room_id):
 ```
 
 </details>
+
+<details>
+<summary>#9.3 render (05:19)</summary>
+
+
+**랜더링하기**
+
+`render` 의 첫번째 매개변수는 request, 두번째 매개변수는 템플릿 이름이 들어온다. 세번째는 데이터를 넘겨줄 것을 넣어준다.
+
+```
+def see_all_rooms(request):
+    rooms = Room.objects.all()
+    return render(request, "all_rooms.html",{"rooms":rooms, 'title':'hello! this title comes from django!'} )
+```
+
+그리고 템플릿 폴더를 만들어 두고 그 안에 명시한 html파일을 만들어 내용을 적어준다. 세번째 매개변수로 넘겨받은 데이터를 사용하고자 하면 플라스크처럼 `{{}}`를 사용해준다
+
+`<h1>{{title}}</h1>`
+
+
+</details>
