@@ -1143,3 +1143,16 @@ def see_one_room(request,room_pk):
 프론트에서는 `not_found`변수의 부울값에 따라 렌더링을 다르게 해주면 된다.
 
 </details>
+
+<details>
+<summary>#9.6 Django vs React (06:38)</summary>
+
+**장고의 템플릿 vs 리액트**
+
+장고 템플릿으로도 충분히 동적으로 만들 수 있지만 충분하지 않기 때문에 리액트를 사용할 것이다.
+
+장고는 어드맨 패널과 ORM, JSON 전송에 사용할 것이고 화면구성(UI)에는 리액트를 사용할 것이다.
+
+장고는 좋은 API서버이다. REST API는 장고의 REST framework이다.
+
+</details>
