@@ -1058,5 +1058,30 @@ def see_all_rooms(request):
 
 `<h1>{{title}}</h1>`
 
+</details>
+
+<details>
+<summary>#9.4 Django Templates (06:42)</summary>
+
+
+**템플릿에서 각 방 표시하기**
+
+플라스크와 같은 문법을 사용해준다.
+
+```
+<h1>{{title}}</h1>
+
+<ul>
+{% for room in rooms %}
+<li><a href="/rooms/{{room.pk}}">
+    {{room.name}}</br>
+    {%for amenity in room.amenities.all %}
+    <span>- {{amenity.name}} </br> </span>
+    {%endfor%}</a>
+</li>
+{%endfor%}
+</ul>
+```
+`a` 태그를 사용하여 해당 방의 primary key를 링크로 걸어 방으로 넘어가게 만들어 주었다.
 
 </details>
