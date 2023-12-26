@@ -1244,3 +1244,51 @@ def categories(request):
 `rest_framework`의 데코레이터의 `api_view`와 `Response`를 이용하면 rest framework 특유의 렌더링 방법으로 json을 보여준다. 하지만 아직 serialize되지 않았다.
 
 </details>
+<details>
+<summary>#10.3 Serializer (10:53)</summary>
+
+**Serialize 파이썬 객체 JSON으로 번역해주기**
+
+```
+from rest_framework import serializers
+
+class CategorySerializer(serializers.Serializer):
+
+    pk = serializers.IntegerField() 
+    name = serializers.CharField(required=True)
+    kind = serializers.CharField()
+    created_at = serializers.DateTimeField()
+```
+직접 serializer를 구현해주었다.
+
+```
+from categories.serializers import CategorySerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import Category
+
+@api_view()
+def categories(request):
+    all_categories = Category.objects.all()
+    serializer = CategorySerializer(all_categories,many=True)
+    return Response(
+        {'ok':True,
+        'categories': serializer.data,
+        }
+    )
+```
+
+구현한 serializer를 가져와 사용해줄 때, `many=true`를 해줘야 인자로 받은 파이썬 객체의 내용을 모두 받아드린다. 받아드린 파이썬 객체의 요소들을 보고 구현해 놓은 것만 번역하여 보여준다.
+
+</details>
+
+<details>
+<summary>poetry 가상환경으로 파이썬 인터프리터 설정하기</summary>
+
+1. 가상환경에서 `poetry env info`로 가상환경의 python.exe 파일의 주소를 알아낸다.
+
+2. `Ctrl + Shift + P`로 파이썬 인터프리터를 설정해준다. 설정해줄때 1번에서 알아낸 주소를 복붙해주면 된다.
+
+-> rest_framework 가 자동완성이 안되길레 사용한 방법
+
+</details>
