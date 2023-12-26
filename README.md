@@ -1156,3 +1156,24 @@ def see_one_room(request,room_pk):
 장고는 좋은 API서버이다. REST API는 장고의 REST framework이다.
 
 </details>
+
+<details>
+<summary>#10.0 Rest Framework - Introduction (06:15)</summary>
+
+**장고 rest 프레임워크**
+
+오래되고 안정적인 프레임워크이고 장고를 사용하는 대부분의 회사의 표준이다.
+
+`poetry add djangorestframework`
+
+pip 말고 poetry를 통해 설치해줄 것이다. poetry 가상환경이 켜져있는 상태에서 설치해야한다.
+
+설치 후 config폴더의 setting.py파일에 추가된 내용을 적어줘야한다.
+
+`THIRD_PARTY_APPS = ['rest_framework',]`
+
+`INSTALLED_APPS = SYSTEM_APPS + THIRD_PARTY_APPS + CUSTOM_APPS`
+
+설치된 rest framework를 사용할 수 있게된다.
+
+</details>
