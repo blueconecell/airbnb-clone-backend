@@ -1201,3 +1201,46 @@ def categories(request):
 json을 웹페이지로 보낼 수 있는데 여기서 python객체를 json에 담아서 보내려면 serializable하지 않아서 오류가 뜨게 된다. 이 파이썬 객체를 json이 해독가능하게 바꿔줘야만 한다.
 
 </details>
+
+<details>
+<summary>#10.2 api_view (06:56)</summary>
+
+**파이썬 객체 json으로 바꿔주기**
+
+```
+from django.http import JsonResponse
+from django.core import serializers
+from .models import Category
+
+def categories(request):
+    all_categories = Category.objects.all()
+    return JsonResponse(
+        {
+            'ok':True,
+            'categories':serializers.serialize("json",all_categories),
+            
+        })
+```
+
+이렇게 번역해주는 serialize를 사용하면 json으로 바뀌어 잘 나오게 된다.
+
+django serialization 프레임워크는 많은 기능을 제공하고 있지 않기 때문에 django rest 프레임워크를 사용할 것이다.
+
+데코레이터를 이용한다. (`@admin.register~~~`)
+
+```
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import Category
+
+@api_view()
+def categories(request):
+    return Response(
+        {'ok':True,
+        }
+    )
+```
+
+`rest_framework`의 데코레이터의 `api_view`와 `Response`를 이용하면 rest framework 특유의 렌더링 방법으로 json을 보여준다. 하지만 아직 serialize되지 않았다.
+
+</details>
