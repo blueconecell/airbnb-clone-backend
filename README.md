@@ -1085,3 +1085,61 @@ def see_all_rooms(request):
 `a` 태그를 사용하여 해당 방의 primary key를 링크로 걸어 방으로 넘어가게 만들어 주었다.
 
 </details>
+
+<details>
+<summary>#9.5 DoesNotExist (08:54)</summary>
+
+
+**한개의 방을 보기 위한 코드 작성하기**
+
+```
+def see_one_room(request,room_pk):
+    room = Room.objects.get(pk=room_pk)
+    return render(request, "room_detail.html",{'room':room,})
+```
+
+ORM을 활용하여 room의 세부 정보들을 가져와 room이라는 변수로 html파일로 넘겨준다.
+
+```
+<h1>{{room.name}}</h1>
+<h3>{{room.country}}/{{room.city}}</h3>
+<h4>{{room.price}}</h4>
+<p>{{room.description}}</p>
+<h5>{{room.category.name}}</h5>
+```
+
+room의 detail들을 메서드 형태로 가져오고, foreign키로 묶여있는 카테고리도 `room.category.name` 이런식으로 쉽게 가져올 수 있다.
+
+**try except 로 예외처리하기**
+
+만약 room_pk값으로 존재하지 않는 방의 정보를 요구할 때는 `404 not found`를 띄워 존재하지 않는 방이라고 알려야 한다.
+
+try except문으로 예외처리를 해주고 프론트에서도 처리를 해준다.
+
+```
+def see_one_room(request,room_pk):
+    try:
+        room = Room.objects.get(pk=room_pk)
+        return render(request, "room_detail.html",{'room':room,})
+    except Room.DoesNotExist:
+        return render(request, "room_detail.html",{'not_found':True,})
+```
+
+만약 존재하지 않는 방이라면 `not_found`라는 변수에 `True`를 담아 보낸다.
+
+```
+{% if not not_found %}
+
+    <h1>{{room.name}}</h1>
+    <h3>{{room.country}}/{{room.city}}</h3>
+    <h4>{{room.price}}</h4>
+    <p>{{room.description}}</p>
+    <h5>{{room.category.name}}</h5>
+{% else %}
+    <h1>404 Not Found 🤣</h1>
+{% endif %}
+```
+
+프론트에서는 `not_found`변수의 부울값에 따라 렌더링을 다르게 해주면 된다.
+
+</details>
