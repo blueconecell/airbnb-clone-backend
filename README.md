@@ -1177,3 +1177,27 @@ pip 말고 poetry를 통해 설치해줄 것이다. poetry 가상환경이 켜�
 설치된 rest framework를 사용할 수 있게된다.
 
 </details>
+<details>
+<summary>#10.1 JsonResponse (12:39)</summary>
+
+**Json으로 응답 넣기**
+
+react를 사용하고 장고의 템플릿 기능을 사용하지 않기로 하였으니 render는 지운다.
+
+```
+from django.http import JsonResponse
+from .models import Category
+
+def categories(request):
+    all_categories = Category.objects.all()
+    return JsonResponse(
+        {
+            'ok':True,
+            'categories':all_categories,
+            
+        })
+```
+
+json을 웹페이지로 보낼 수 있는데 여기서 python객체를 json에 담아서 보내려면 serializable하지 않아서 오류가 뜨게 된다. 이 파이썬 객체를 json이 해독가능하게 바꿔줘야만 한다.
+
+</details>
