@@ -1292,3 +1292,81 @@ def categories(request):
 -> rest_framework 가 자동완성이 안되길레 사용한 방법
 
 </details>
+
+<details>
+<summary>#10.4 POST Requests (12:34)</summary>
+
+**GET 요청**
+
+`/categories` 는 모든 카테고리를 보여준다. 하나만 보여주기 위해서 primary key 값을 url 뒤에 넣어서 만들어줄 것이다.
+
+`/categories/1` 로 들어가면 pk값이 1인 카테고리를 보여준다.
+
+먼저 urls.py에 `path("<int:pk>", views.category)` 추가한 후 views.py에 `category`함수를 만들어준다.
+
+```
+@api_view()
+def category(request, pk):
+    category = Category.objects.get(pk=pk)
+    serializer = CategorySerializer(category)
+    return Response(serializer.data)
+```
+
+![img](./readme_img/10.4-1.jpg)
+
+정보를 조회하기 위한 GET요청에 관하여 처리하였다.
+
+**POST 요청**
+
+views.py에 `@api_view()` 괄호 부분에 `["GET","POST"]` 단순히 추가만 해줘도 POST 요청까지 한번에 처리해줄 수 있다.
+
+```
+@api_view(["GET","POST"])
+def categories(request):
+    all_categories = Category.objects.all()
+    serializer = CategorySerializer(all_categories,many=True)
+    return Response(serializer.data)
+
+@api_view(["GET","POST"])
+def category(request, pk):
+    category = Category.objects.get(pk=pk)
+    serializer = CategorySerializer(category)
+    return Response(serializer.data)
+```
+
+![img](./readme_img/10.4-2.jpg)
+
+심지어 아래부분에 POST요청을 위한 form도 제공해주는 것을 볼 수 있다.
+
+그리고 코드를 request 유형에 따라 수정한후 웹페이지 아래에 있는 `POST` 버튼을 클릭하면 요청이 성공하는 것을 확인해볼 수 있다.
+
+```
+@api_view(["GET","POST"])
+def categories(request):
+    if request.method == "GET":
+        all_categories = Category.objects.all()
+        serializer = CategorySerializer(all_categories,many=True)
+        return Response(serializer.data)
+    elif request.method == "POST":
+        return Response({'created':True})
+```
+
+![img](./readme_img/10.4-3.jpg)
+
+만약에 유저로부터 POST요청을 받는 경우를 상세히 코드로 짜보려 한다.
+
+```
+{
+"name": "test from 웹페이지 !!",
+"kind": "rooms"
+}
+```
+
+위 내용으로 post를 보내면 올바른 형식을 인지하고 요청이 성공하게 된다.
+
+이 정보로 바로 데이터베이스를 수정하게 되면 편하겠지만 검증과정을 거치는 것이 좋다.
+
+그리고 Serializer는 파이썬 객체를 json user word로 바꿔주는 것 뿐만 아니라 반대의 경우인 유저의 json user word를 파이썬 객체로 번역하는 것도 해준다!
+
+
+</details>
