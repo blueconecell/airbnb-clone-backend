@@ -1694,3 +1694,12 @@ class CategorySerializer(serializers.ModelSerializer):
 필드는 표시하고싶은것, `exclude`를 사용하면 제외하고 싶은것만 적을 수도 있다.`fields="__all__"` 이렇게 적으면 모든 필드를 표시할 수 있다.
 
 </details>
+
+<details>
+<summary>#10.12 ModelViewSet (07:34)</summary>
+
+**ModelSerializer로 중복 줄이기**
+
+
+
+</details>
