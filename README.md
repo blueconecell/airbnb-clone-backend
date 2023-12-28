@@ -1667,3 +1667,30 @@ urlpatterns = [
 마지막으로 url을 다음과 같이 수정해준다. 클래스로 만들어줬기 때문에 `views.Categories.as_view()`로 가져온다.
 
 </details>
+
+<details>
+<summary>#10.11 ModelSerializer (11:53)</summary>
+
+**ModelSerializer로 중복 줄이기**
+
+ModelSerializer으로부터 serializer를 상속받으면 이때까지 구현했던 것들을 다 제공받을 수 있다.
+
+상속받은 클래스 안에 Meta클래스를 만들어 사용하고자하는 Model과 표시하고자하는 필드를 선택해줄 수 있다.
+
+```
+from rest_framework import serializers
+from .models import Category
+
+class CategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = (
+            "pk",
+            "name",
+            "kind",
+        )
+```
+필드는 표시하고싶은것, `exclude`를 사용하면 제외하고 싶은것만 적을 수도 있다.`fields="__all__"` 이렇게 적으면 모든 필드를 표시할 수 있다.
+
+</details>
