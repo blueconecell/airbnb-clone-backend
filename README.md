@@ -1698,8 +1698,57 @@ class CategorySerializer(serializers.ModelSerializer):
 <details>
 <summary>#10.12 ModelViewSet (07:34)</summary>
 
-**ModelSerializer로 중복 줄이기**
+**ModelViewSet로 중복 줄이기**
 
+```
+from categories.serializers import CategorySerializer
+from rest_framework.exceptions import NotFound
+from rest_framework.response import Response
+from rest_framework.status import HTTP_204_NO_CONTENT
+from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
+from .models import Category
 
+class CategoryViewSet(ModelViewSet):
+
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all()
+
+```
+
+`ModelViewSet`을 이용하면 단 2줄로 모든 기능을 사용할 수 있다.
+
+대신 urls.py에서 어떤 request 메서드를 사용할 것인지만 정해주어야 한다.
+
+```
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('', views.CategoryViewSet.as_view({
+        'get':'list',
+        'post':'create',
+    })),
+    path("<int:pk>", views.CategoryViewSet.as_view({
+        'get':'retrieve',
+        'put':'partial_update',
+        'delete':'destroy',
+    }))
+]
+```
+
+`views.CategoryViewSet.as_view()`안에 요청 메서드와 해당 메서드의 함수를 짝지어 주면 된다.
+
+[장고 rest 프레임워크의 viewset](https://www.django-rest-framework.org/api-guide/viewsets/#viewsets)
+
+</details>
+
+<details>
+<summary>#10.13 Conclusions (09:36)</summary>
+
+**ModelViewSet를 사용하지 않는 이유**
+
+ModelViewSet보더 다 나은 방법은 장고가 제공하는 routing을 사용하는 것인데 이미 ModelViewSet 방법부터 너무 많은 것들이 추상화가 되어있다는 단점이 있다. 세부적으로 가능을 손봐야할 경우나, 기능이 어떻게 동작하는지 알아볼 수 없을 정도로 추상화되어 있어서 짜야할 코드는 짧을 수 있지만 불편할 수 있다.
+
+따라서 ModelViewSet은 사용하지 않을 예정이다.
 
 </details>
