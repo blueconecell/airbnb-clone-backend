@@ -1370,3 +1370,64 @@ def categories(request):
 
 
 </details>
+
+<details>
+<summary>#10.5 is_valid() (09:43)</summary>
+
+**검증하기**
+
+Serializer가 유저가 POST요청을 보낸 데이터를 검증하는데 도움을 줄 수 있다.
+
+Serializer에게 파이썬 객체를 JSON으로 번역시키고 싶으면 인스턴스를 첫번째 인자로 주면된다.
+
+`serializer = CategorySerializer(all_categories,many=True)`
+
+Serializer에게 유저가 보낸 JSON을 파이썬 객체로 번역시키고 싶으면 `data=~~~`을 사용하면 된다.
+
+`serializer = CategorySerializer(data=request.data)`
+
+serializer에게 데이터의 형태를 미리 알려줬기 때문에 미리 알려준 데이터 형식을 알고 있다.
+
+```
+elif request.method == "POST":
+    serializer = CategorySerializer(data=request.data)
+    print(serializer.is_valid())
+    print(serializer.errors)
+    return Response({'created':True})
+```
+
+`is_valid()`로 검증해볼 수 있다. `errors`로 오류의 내용을 알아낼 수 있다.
+
+ serializer를 한번 만들어뒀다면 파싱과 검증까지 모두 할 수 있다.
+
+```
+from rest_framework import serializers
+
+class CategorySerializer(serializers.Serializer):
+
+    pk = serializers.IntegerField(read_only=True) 
+    name = serializers.CharField(required=True,max_length=50,)
+    kind = serializers.CharField(max_length=15,)
+    created_at = serializers.DateTimeField(read_only=True)
+```
+
+serializer를 이렇게 수정함으로써 pk, created_at를 유저가 post요청하지 못하게 할 수 있고, name, kind의 값에 제한을 걸 수 있다.
+
+```
+@api_view(["GET","POST"])
+def categories(request):
+    if request.method == "GET":
+        all_categories = Category.objects.all()
+        serializer = CategorySerializer(all_categories,many=True)
+        return Response(serializer.data)
+    elif request.method == "POST":
+        serializer = CategorySerializer(data=request.data)
+        if serializer.is_valid():
+            return Response({'created':True})
+        else:
+            return Response(serializer.errors)
+```
+검증 결과를 기준으로 if문으로 경우를 나눠 성공과 실패(오류 리턴하기)를 나눴다.
+
+
+</details>
