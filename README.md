@@ -1436,7 +1436,7 @@ def categories(request):
 <details>
 <summary>#10.6 save() (12:22)</summary>
 
-**검증하기**
+**데이터베이스에 저장하기**
 
 카테고리는 2가지 방과 활동으로 선택 제한이 걸려있다.
 
@@ -1489,5 +1489,63 @@ if serializer.is_valid():
 화면에서 성공한 결과를 볼 수있고 데이터베이스에 정상적으로 값이 들어가는 것을 볼 수 있다.
 
 GET, POST 요청 완료하였다. 앞으로 수정PUT과 삭제DELETE도 진행할 것이다.
+
+</details>
+
+
+
+<details>
+<summary>#10.7 update() (17:19)</summary>
+
+**데이터베이스에 저장하기**
+
+```
+@api_view(["GET","PUT"])
+def category(request, pk):
+    try:
+        category = Category.objects.get(pk=pk)
+    except Category.DoesNotExist:
+        raise NotFound
+
+    if request.method == "GET":
+
+        serializer = CategorySerializer(category)
+        return Response(serializer.data)
+
+    elif request.method == "PUT":
+
+        serializer = CategorySerializer(
+            category, 
+            data=request.data,
+            partial=True,
+        )
+        if serializer.is_valid():
+            updated_category = serializer.save()
+            return Response(CategorySerializer(updated_category).data)
+        else:
+            return Response(serializer.errors)
+```
+
+카테고리 세부 항목에서 PUT메서드로 수정 할 것이다. 먼저 PK값으로 카테고리 세부항목을 가져오니 존재하면 항목을 가져오고 없다면 404 NOT FOUND를 띄우도록 초반에서 설정을 해줬다.
+
+그리고 처음에는 GET메서드일 경우 간단하게 보여주는 코드이고 그 다음에 PUT메서드로 수정할때의 코드이다.
+
+수정할때는 name과 kind를 모두 수정할 수도 있지만 그중 하나만 수정할 경우도 있다. 따라서 둘중 하나만 수정할 경우를 위해 `partial=True`를 추가하여 수정하고 싶지 않은 나머지 항목은 처음값 그대로 유지되게 한다.
+
+PUT메서드에서 사용하는 `serializer.save()`는 Serializer의 `update`함수를 찾으러 간다. 따라서 `update`함수를 직접 구현해줘야한다.
+
+```
+def update(self, instance, validated_data):
+    instance.name = validated_data.get("name",instance.name)
+    instance.kind = validated_data.get("kind",instance.kind)
+    instance.save()
+    return instance
+```
+
+update는 에서는 instance인자를 통해 바뀐값을 수정해줘야한다. 여기서 `.get()`메서드를 사용하는데 이 메서드의 두번째 인자는 찾고하하는 첫번째 인자가 존재하지 않으면 기본값을 대신 반환한다는 의미이다. 따라서 기본값으로 처음 값 그대로를 반환해주기 위해 `instance.~~`를 사용해준다.
+
+값을 바꿔줬으면 `instance.save()`로 저장해주고 instance를 반환해준다.
+
+그리고 화면에 instance 값을 띄워준다.
 
 </details>
