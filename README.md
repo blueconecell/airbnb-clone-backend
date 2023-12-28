@@ -1431,3 +1431,63 @@ def categories(request):
 
 
 </details>
+
+
+<details>
+<summary>#10.6 save() (12:22)</summary>
+
+**검증하기**
+
+카테고리는 2가지 방과 활동으로 선택 제한이 걸려있다.
+
+```
+from rest_framework import serializers
+from .models import Category
+
+class CategorySerializer(serializers.Serializer):
+
+    pk = serializers.IntegerField(read_only=True) 
+    name = serializers.CharField(required=True,max_length=50,)
+    kind = serializers.ChoiceField(max_length=15,choices=Category.CategoryKindChoices.choices,)
+    created_at = serializers.DateTimeField(read_only=True)
+```
+serializers를 위와 같이 수정한다. kind를 `ChoiceField`로 바꾼후 기존에 만들어둔 카테고리 모델의 kind 선택 클래스를 이용한다.
+
+model과 serializers에게 2번씩 데이터를 정의해주는 것은 번거로운 과정이다.
+
+serializer는 `save()` 메서드가 있다. 이 메서드를 작동시키면 create메서드를 찾기 시작한다. 이 `create`메서드는 직접 만들어줘야한다.
+
+`create`메서드는 새로운 객체를 return하거나 error를 return해줘야 한다.
+
+```
+def create(self, validated_data):
+    return Category.objects.create(
+        name=validated_data['name'],
+        kind=validated_data['kind']
+    )
+```
+
+이렇게 만드는 것은 비생산적이다.
+
+```
+def create(self, validated_data):
+    return Category.objects.create(**validated_data)
+```
+이렇게 간단하게 적어주면 똑같은 효과를 얻을 수 있다.
+
+```
+if serializer.is_valid():
+    new_category=serializer.save()
+    return Response(CategorySerializer(new_category).data,)
+```
+검증후 코드를 이렇게 적어주고 화면에 POST결과를 띄워줄 수 있다.
+
+![img](./readme_img/10.6-1.jpg)
+
+![img](./readme_img/10.6-2.jpg)
+
+화면에서 성공한 결과를 볼 수있고 데이터베이스에 정상적으로 값이 들어가는 것을 볼 수 있다.
+
+GET, POST 요청 완료하였다. 앞으로 수정PUT과 삭제DELETE도 진행할 것이다.
+
+</details>
