@@ -1492,12 +1492,10 @@ GET, POST 요청 완료하였다. 앞으로 수정PUT과 삭제DELETE도 진행�
 
 </details>
 
-
-
 <details>
 <summary>#10.7 update() (17:19)</summary>
 
-**데이터베이스에 저장하기**
+**업데이트하기**
 
 ```
 @api_view(["GET","PUT"])
@@ -1547,5 +1545,30 @@ update는 에서는 instance인자를 통해 바뀐값을 수정해줘야한다.
 값을 바꿔줬으면 `instance.save()`로 저장해주고 instance를 반환해준다.
 
 그리고 화면에 instance 값을 띄워준다.
+
+</details>
+
+<details>
+<summary>#10.8 DELETE (05:05)</summary>
+
+**삭제하기**
+
+`@api_view(["GET","PUT", "DELETE"])`
+
+삭제를 위해 method를 추가해준다
+
+`from rest_framework.status import HTTP_204_NO_CONTENT`
+
+```
+elif request.method=="DELETE":
+    category.delete()
+    return Response(status=HTTP_204_NO_CONTENT)
+```
+
+204 response를 띄우기 위해 임포트 해오고 단순하게 `category.delete()`로 삭제해준다.
+
+`path('api/v1/categories/', include('categories.urls')),`
+
+그리고 api URL주소를 다음과 같이 `api/v1/categories/`로 바꿔주어 api관련 주소임을 적어주는 것이 좋다. 그리고 api 버전도 적어주는것이 좋다.
 
 </details>
