@@ -1591,3 +1591,79 @@ elif request.method=="DELETE":
 - 항상 데이터가 유효한지 검증하고 수행해줘야한다.
 - 
 </details>
+
+<details>
+<summary>#10.10 APIView (10:00)</summary>
+
+**APIView를 통한 리팩토링**
+
+```
+from categories.serializers import CategorySerializer
+from rest_framework.exceptions import NotFound
+from rest_framework.response import Response
+from rest_framework.status import HTTP_204_NO_CONTENT
+from rest_framework.views import APIView
+from .models import Category
+
+class Categories(APIView):
+
+    def get(self, request):
+        all_categories = Category.objects.all()
+        serializer = CategorySerializer(all_categories,many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = CategorySerializer(data=request.data)
+        if serializer.is_valid():
+            new_category=serializer.save()
+            return Response(CategorySerializer(new_category).data,)
+        else:
+            return Response(serializer.errors)
+
+class CategoryDetail(APIView):
+
+    def get_object(self,pk):
+        try:
+            category = Category.objects.get(pk=pk)
+        except Category.DoesNotExist:
+            raise NotFound
+        return category
+
+    def get(self, request, pk):
+        serializer = CategorySerializer(self.get_object(pk))
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        serializer = CategorySerializer(
+            self.get_object(pk), 
+            data=request.data,
+            partial=True,
+        )
+        if serializer.is_valid():
+            updated_category = serializer.save()
+            return Response(CategorySerializer(updated_category).data)
+        else:
+            return Response(serializer.errors)
+
+    def delete(self, request, pk):
+        self.get_object(pk).delete()
+        return Response(status=HTTP_204_NO_CONTENT)
+```
+
+리팩토링 후의 코드이다.
+if~else문들을 없애버리고 각각의 get, post, delete, put 메서드들을 클래스 속의 함수들로 바꾸어 주었다.
+
+그리고 try except문으로 카테고리 세부정보 가져올때 해당 카테고리의 존재 유무를 판단했었는데 장고의 관습적인 방법을 사용하였다. `get_object`함수를 만들어 판단하고 `category`라는 값으로 return하였다. 아래 함수들에서 이 값을 사용할 때에는 `self.get_object(pk)`로 가져온다.
+
+```
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('', views.Categories.as_view()),
+    path("<int:pk>", views.CategoryDetail.as_view())
+]
+```
+
+마지막으로 url을 다음과 같이 수정해준다. 클래스로 만들어줬기 때문에 `views.Categories.as_view()`로 가져온다.
+
+</details>
