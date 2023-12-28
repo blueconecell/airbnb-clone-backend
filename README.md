@@ -1572,3 +1572,22 @@ elif request.method=="DELETE":
 그리고 api URL주소를 다음과 같이 `api/v1/categories/`로 바꿔주어 api관련 주소임을 적어주는 것이 좋다. 그리고 api 버전도 적어주는것이 좋다.
 
 </details>
+
+
+<details>
+<summary>#10.9 Recap (08:55)</summary>
+
+**복습**
+
+- 프론트는 리액트를 쓰고 장고는 백엔드 api로만 사용할 것이다.
+- 장고 serializer를 사용한다.
+- 장고 rest 프레임워크를 사용한다.
+- serializer에서 제한을 걸어줄 수 있다.
+- 번역해야할 것이 있다면 many 인자를 사용해준다.
+- serializer는 인자를 받아 요청 메서드를 수행한다.
+- 검증절차를 수행할 수 있다.
+- 데이터베이스 작성, 수정, 삭제를 할 수 있다.
+- serializer 내부에 생성, 수정 함수를 구현해야한다.
+- 항상 데이터가 유효한지 검증하고 수행해줘야한다.
+- 
+</details>
