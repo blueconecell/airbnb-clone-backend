@@ -1783,3 +1783,33 @@ Amenity detail의 get, put, delete 기능구현
 Perks의 get, post기능구현과 Perk detail의 get, put, delete 기능구현
 
 </details>
+
+
+
+<details>
+<summary>#11.3 Rooms (12:23)</summary>
+
+**rooms 구현하기**
+
+방을 보는건 인증 상관 없지만 방을 생성하려면 로그인된 인증 상태여야 한다.
+
+```
+
+class RoomSerializer(ModelSerializer):
+    class Meta:
+        model = Room
+        fields = "__all__"
+        depth = 1
+```
+
+serializer를 만들 때 `depth=1`를 사용하게 되면 데이터 베이스의 관계를 한단계 깊이 표현하여 관계가 있는 객체의 세부 정보까지 한칸 깊게 보여준다.
+
+![img](./readme_img/11.3-1.jpg)
+
+하지만 모든 것이 필요한 경우는 잘 없고 많은 불필요한 데이터를 가져오는 것은 비효율적이다.
+
+우리는 owner의 세부정보들은 room/1 처럼 방의 세부정보를 보려고 할때 보여줄 것이다.
+
+따라서 serializer를 수정해줘야한다.
+
+</details>
