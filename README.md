@@ -1928,5 +1928,39 @@ request.user의 인증 여부에 따라 코드를 짜줄 수 있다.
 
 ![img](./readme_img/11.6-2.jpg)
 
+</details>
+
+<details>
+<summary>#11.7 Room Category (09:54)</summary>
+
+**만들어본 api로 room생성해보기**
+
+카테고리 처리를 해주기 위해서 카테고리를 필수로 적어야 하는지 여부에 대하여 우리가 정해줘야한다. 필수로 적어야 한다고 생각하고 구현하도록 한다.
+
+```
+category_pk = request.data.get("category")
+    if not category_pk:
+        raise ParseError
+```
+
+먼저 request.data 값에 카테고리를 넣었는지 확인한다. 카테고리가 없다면 오류를 띄운다. `ParseError` 는 400 bad request 를 화면에 띄워준다.
+
+```
+try:
+    category = Category.objects.get(pk=category_pk)
+    if category.kind == Category.CategoryKindChoices.EXPERIENCES:
+        raise ParseError
+except Category.DoesNotExist:
+    raise ParseError
+room = serializer.save(
+    owner=request.user, 
+    category = category,)
+```
+
+그런 다음 try~except문으로 존재하는 카테고리라면 성공적으로 데이터를 저장시킬 것이고, 그렇지 않으면 ParseError을 띄울 것이다. 또한 room에 대한 생성이므로 Experience 형태의 생성은 ParseError을 띄워 막아줄 것이다.
+
+검증이 끝났으면 카테고리의 pk값을 serialize.save의 인자로 넣어준다. 
+
+여기서 카테고리의 pk 값은 프론트에서 유저에게 선택권을 주어 pk값을 즉시 받을 수 있도록 구현해야할 것이다.
 
 </details>
