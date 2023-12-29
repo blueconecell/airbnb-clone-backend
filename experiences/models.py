@@ -48,7 +48,7 @@ class Perk(CommonModel):
         max_length=100,
     )
     details = models.CharField(
-        max_length=250,
+        max_length=300,
         blank=True,
         default="",
     )

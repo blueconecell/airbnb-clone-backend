@@ -1774,3 +1774,12 @@ amenity에 관한 구현을 계속 진행할 것이다.
 Amenity detail의 get, put, delete 기능구현
 
 </details>
+
+<details>
+<summary>#11.2 Perks and PerkDetail (12:00)</summary>
+
+**Perk 구현하기**
+
+Perks의 get, post기능구현과 Perk detail의 get, put, delete 기능구현
+
+</details>
