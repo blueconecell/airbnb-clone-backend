@@ -2005,3 +2005,65 @@ for amenity_pk in amenities:
 amenity가 입력되던 중간에 존재하지 않는 것이 입력되면 어떻게 할건지 여러 방법이 있다. 위 코드처럼 잘못된것이 입력되었다고 알려주면서 방은 정상적으로 생성해주는 방법이 있고, raise부분을 pass로 처리해버려 그냥 조용히 지나가는 방법이 있고, room을 아예 delete해버리는 방법도 있다.
 
 </details>
+
+<details>
+<summary>#11.9 Transactions (08:58)</summary>
+
+**transaction**
+
+amenities 들을 입력하다가 존재하지 않는 amenity가 식별되면 만들던 room을 삭제해버리는 경우가 있을 것이다. 이 경우 room을 한번 생성했다가 삭제하는 과정을 거치기 때문에 room의 id가 계속 +=1 이 된다.
+
+여러번 생성 삭제를 반복하다가, 드디어 정상적으로 방이 생성된 상황이라면 id값이 몇칸 뛰어넘은 상태가 된 것을 볼 수 있다. 이런 경우를 위하여 장고는 transaction기능을 제공해준다.
+
+실패했다면 모든 과정을 전부 실패로, 성공했다면 모든 과정을 전부 성공으로.
+
+`from django.db import transaction`
+
+```
+class Rooms(APIView):
+
+    def get(self, request):
+        all_rooms = Room.objects.all()
+        serializer = RoomListSerializer(all_rooms, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+
+        if request.user.is_authenticated:
+            serializer = RoomDetailSerializer(data=request.data)
+            if serializer.is_valid():
+                category_pk = request.data.get("category")
+                if not category_pk:
+                    raise ParseError("Category is required.")
+                try:
+                    category = Category.objects.get(pk=category_pk)
+                    if category.kind == Category.CategoryKindChoices.EXPERIENCES:
+                        raise ParseError("The category kind should be 'rooms'")
+                except Category.DoesNotExist:
+                    raise ParseError("Category not found.")
+                # 트랜색션 시작
+                try:
+                    with transaction.atomic():
+                        room = serializer.save(
+                            owner=request.user, 
+                            category = category,)
+                        amenities = request.data.get("amenities")
+                        for amenity_pk in amenities:
+                            amenity = Amenity.objects.get(pk=amenity_pk)
+                            room.amenities.add(amenity )
+                        serializer = RoomDetailSerializer(room)
+                        return Response(serializer.data)
+                except Exception:
+                    raise ParseError("Amenity not found")
+            else:
+                return Response(serializer.errors)
+        else:
+            raise NotAuthenticated
+```
+
+전체 코드에서 데이터베이스에 본격적으로 저장되는 부분이 트랜색션 시작부분부터 try except문으로 시작한다.
+일단 오류가 나면 유저에게 알려주기 위함이다. 그리고 오류가 발생하면 `with.transaction.atomic()`부분으로 전체 과정이 감싸져있기 때문에 중간에 amenity로 인하여 오류가 발생한다면 전체 과정을 없었던 시점으로 되돌린다.
+
+
+
+</details>
