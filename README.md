@@ -1784,8 +1784,6 @@ Perks의 get, post기능구현과 Perk detail의 get, put, delete 기능구현
 
 </details>
 
-
-
 <details>
 <summary>#11.3 Rooms (12:23)</summary>
 
@@ -1813,3 +1811,46 @@ serializer를 만들 때 `depth=1`를 사용하게 되면 데이터 베이스의
 따라서 serializer를 수정해줘야한다.
 
 </details>
+
+<details>
+<summary>#11.4 Room Detail (14:42)</summary>
+
+**rooms의 serializer 구현하기**
+
+세부 방의 정보를 보여줄 때 owner의 정보를 depth=1으로 설정하게 되면 보안에 염려되는 정보까지 공개가 될 수 있다. 따라서 user에 직접가서 serializer를 만들어주어 보여주고 싶은 것들만 보여주도록 한다.
+
+```
+from rest_framework.serializers import ModelSerializer
+
+from .models import User
+
+class TinyUserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            "name","avatar","username",
+        )
+```
+미리 작은 정보만 보여주는 serializer를 유저에 만들어두고, 이것을 room의 serializer를 만들때 활용한다.
+
+
+```
+class RoomDetailSerializer(ModelSerializer):
+    owner = TinyUserSerializer()
+    amenities = AmenitySerializer(many=True)
+    category = CategorySerializer()
+    class Meta:
+        model = Room
+        fields = "__all__"
+```
+
+그런다음 방의 세부정보 serializer를 만들때 import해와서 사용해준다. 그러면 우리가 보여주고 싶었던 부분만 보여줄 수 있다.
+
+나머지 amenities, category또한 relation으로 연결되어 있어 그냥 pk 값으로만 보여졌었지만 각각의 serializer를 가져와서 연결지어주면 `depth=1`를 사용하지 않고 한층 더 깊게 데이터를 가져올 수 있다. 또한 각각의 항목들에서 보여주고 싶지 않은 부분은 각각의 serializer에서 fields값을 적절히 수정하면 된다.
+
+같은 파일에 있는 serializer를 사용하고 싶다면 사용 당하는 serializer가 더 위에 있으면 된다.
+
+</details>
+
+
+
