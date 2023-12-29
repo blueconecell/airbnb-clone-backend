@@ -1895,3 +1895,38 @@ Write an explicit `.create()` method for serializer `rooms.serializers.RoomDetai
 이런 오류가 발생하게 된다.
 
 </details>
+
+<details>
+<summary>#11.6 Room Owner (13:13)</summary>
+
+**만들어본 api로 room생성해보기**
+
+POST요청의 serializer.save() 코드가 create함수를 호출하게 된다. category, amenities둘다 read_only로 바꿔주면 오류를 회피하였지만, 필수적인 요소가 빠졌다고 새로운 오류가 뜬다.
+
+여기서 유저 정보를 받아오기 위하여 request.data가 아니라 request object의 정보를 사용하여 현재 post요청을 하는 유저가 누구인지 알아낼 수 있다. (`request.user`)
+
+```
+if request.user.is_authenticated:
+    serializer = RoomDetailSerializer(data=request.data)
+    if serializer.is_valid():
+        room = serializer.save()
+        serializer = RoomDetailSerializer(room)
+        return Response(serializer.data)
+    else:
+        return Response(serializer.errors)
+else:
+    raise NotAuthenticated
+```
+
+request.user의 인증 여부에 따라 코드를 짜줄 수 있다.
+
+![img](./readme_img/11.6-1.jpg)
+
+`room = serializer.save(owner=request.user)` 저장할때 매개변수로 owner를 직접 지정해준다면 create 메서드가 동작할때, validated_data에 자동으로 매개변수로 넣어준 owner를 추가해준다. 이 방법을 사용하면 간편하게 create메서드를 오버라이딩할 필요없이 필요한 정보를 추가해줄 수 있다.
+
+그리고나서 POST요청을 하면 정상적으로 요청이 성공한다. 물론 category, amenities가 없는 상태로 되었다.
+
+![img](./readme_img/11.6-2.jpg)
+
+
+</details>
