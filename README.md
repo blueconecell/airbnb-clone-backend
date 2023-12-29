@@ -1899,7 +1899,7 @@ Write an explicit `.create()` method for serializer `rooms.serializers.RoomDetai
 <details>
 <summary>#11.6 Room Owner (13:13)</summary>
 
-**만들어본 api로 room생성해보기**
+**만들어본 api로 room생성해보기 - owner**
 
 POST요청의 serializer.save() 코드가 create함수를 호출하게 된다. category, amenities둘다 read_only로 바꿔주면 오류를 회피하였지만, 필수적인 요소가 빠졌다고 새로운 오류가 뜬다.
 
@@ -1933,7 +1933,7 @@ request.user의 인증 여부에 따라 코드를 짜줄 수 있다.
 <details>
 <summary>#11.7 Room Category (09:54)</summary>
 
-**만들어본 api로 room생성해보기**
+**만들어본 api로 room생성해보기 - category**
 
 카테고리 처리를 해주기 위해서 카테고리를 필수로 적어야 하는지 여부에 대하여 우리가 정해줘야한다. 필수로 적어야 한다고 생각하고 구현하도록 한다.
 
@@ -1962,5 +1962,46 @@ room = serializer.save(
 검증이 끝났으면 카테고리의 pk값을 serialize.save의 인자로 넣어준다. 
 
 여기서 카테고리의 pk 값은 프론트에서 유저에게 선택권을 주어 pk값을 즉시 받을 수 있도록 구현해야할 것이다.
+
+</details>
+
+<details>
+<summary>#11.8 Room Amenities (14:26)</summary>
+
+**만들어본 api로 room생성해보기 - amenities**
+
+ParseError오류는 오류의 이유를 적어줄 수 있다.
+
+```
+category_pk = request.data.get("category")
+if not category_pk:
+    raise ParseError("Category is required.")
+try:
+    category = Category.objects.get(pk=category_pk)
+    if category.kind == Category.CategoryKindChoices.EXPERIENCES:
+        raise ParseError("The category kind should be 'rooms'")
+except Category.DoesNotExist:
+    raise ParseError("Category not found.")
+```
+
+방을 생성하려면 owner가필요하다. User 모델을 통해 유저를 찾아내어 owner에 할당한다.
+
+category도 필요하다. 마찬가지로 Category모델을 통해 카테고리를 찾아내어 category에 할당한다.
+
+owner, category는 ForiegnKey로 받아오기 때문에 하나씩 대응이 되면 된다. 하지만 amenities는 ManyToManyField 이기 때문에 여러개가 들어올 수 있고, 아무것도 없어도 된다.
+
+따라서 amenities는 add()방식으로 하나씩 추가해주고 remove() 방식으로 삭제를 해줘도 된다.
+
+```
+amenities = request.data.get("amenities")
+for amenity_pk in amenities:
+    try:
+        amenity = Amenity.objects.get(pk=amenity_pk)
+        room.amenities.add(amenity )
+    except Amenity.DoesNotExist:
+        raise ParseError(f"Amenity with id {amenity_pk} not found")
+```
+
+amenity가 입력되던 중간에 존재하지 않는 것이 입력되면 어떻게 할건지 여러 방법이 있다. 위 코드처럼 잘못된것이 입력되었다고 알려주면서 방은 정상적으로 생성해주는 방법이 있고, raise부분을 pass로 처리해버려 그냥 조용히 지나가는 방법이 있고, room을 아예 delete해버리는 방법도 있다.
 
 </details>
