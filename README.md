@@ -1852,5 +1852,46 @@ class RoomDetailSerializer(ModelSerializer):
 
 </details>
 
+<details>
+<summary>#11.5 Create Room (11:41)</summary>
 
+**만들어본 api로 room생성해보기**
 
+방을 생성할 때 가장 걸림돌이 되는 것은 relation이 있는 정보를 넘겨줘야할 때이다.
+
+owner, amenities, category가 있는데 그중에서 owner를 먼저 다룰 것이다.
+
+owner는 유저가 조작할 수 없도록 request.data로부터 받지 않도록 할 것이다. 만약 request.data로부터 받으면 유저가 request를 조작하여 다른사람이 방을 만든것으로 할 수 있기 때문에 그런 상황을 피해야 한다.
+
+serializer에서 `owner = TinyUserSerializer(read_only=True)` 이렇게 읽기 전용으로 바꾸어 입력값을 무시하도록 한다.
+
+만약 category, amenities의 각각의 serializer가 요구하는 입력형식을 만족하였지만 각각에 존재하는 category, amenities를 입력해줘야 정상적으로 room을 생성하는 과정으로 취급된다. 존재하지 않는 값들을 넣게 되면 serializer.is_valid()는 문제가 없다고 통과시키지만 db에 저장하는 과정에서 오류가 생기게 된다.
+
+```
+{
+    "owner":1,
+    "category":{"name":"wwwwwwwssssss","kind":"rooms"},
+    "amenities":[{"name":"asdfasdfasdfa","description":"eeeeeeee"}],
+    "name": "house created by DRF",
+    "country": "한국",
+    "city": "제주",
+    "price": 3000,
+    "rooms": 2,
+    "toilets": 2,
+    "description": "많이 비쌈...",
+    "address": "제주 서귀포시",
+    "pet_friendly": true,
+    "kind": "private_room"
+}
+```
+
+이런식의 입력을 넣고 POST를 하면 
+
+```
+AssertionError at /
+The `.create()` method does not support writable nested fields by default.
+Write an explicit `.create()` method for serializer `rooms.serializers.RoomDetailSerializer`, or set `read_only=True` on nested serializer fields.
+```
+이런 오류가 발생하게 된다.
+
+</details>
