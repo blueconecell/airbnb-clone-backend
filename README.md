@@ -1752,3 +1752,16 @@ ModelViewSet보더 다 나은 방법은 장고가 제공하는 routing을 사용
 따라서 ModelViewSet은 사용하지 않을 예정이다.
 
 </details>
+
+<details>
+<summary>#11.0 All Amenities (12:38)</summary>
+
+**Amenities 구현하기**
+
+APIView 까지의 기능을 사용하여 손쉽게 구현한다.
+
+여기서 serializer을 만들때 부모 클래스인 `ModelSerializer`로부터 상속받아 사용하는데 `id, created_at, updated_at`는 자동으로 `read_only`가 적용되어 편리하다.(직접 구현해주지 않아도 된다.)
+
+amenity에 관한 구현을 계속 진행할 것이다.
+
+</details>
