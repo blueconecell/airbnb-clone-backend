@@ -1765,3 +1765,12 @@ APIView 까지의 기능을 사용하여 손쉽게 구현한다.
 amenity에 관한 구현을 계속 진행할 것이다.
 
 </details>
+
+<details>
+<summary>#11.1 Amenity Detail (07:13)</summary>
+
+**Amenities 구현하기**
+
+Amenity detail의 get, put, delete 기능구현
+
+</details>
