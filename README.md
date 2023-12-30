@@ -2064,6 +2064,73 @@ class Rooms(APIView):
 전체 코드에서 데이터베이스에 본격적으로 저장되는 부분이 트랜색션 시작부분부터 try except문으로 시작한다.
 일단 오류가 나면 유저에게 알려주기 위함이다. 그리고 오류가 발생하면 `with.transaction.atomic()`부분으로 전체 과정이 감싸져있기 때문에 중간에 amenity로 인하여 오류가 발생한다면 전체 과정을 없었던 시점으로 되돌린다.
 
+</details>
 
+<details>
+<summary>#11.10 Delete Rooms (09:26)</summary>
+
+**room delete기능**
+
+delete기능 생성
+
+```
+def delete(self, request, pk):
+    room = self.get_object(pk)
+    if not request.user.is_authenticated:
+        raise NotAuthenticated
+    if room.owner != request.user:
+        raise PermissionDenied
+    room.delete()
+    return Response(status=HTTP_204_NO_CONTENT)
+```
+
+삭제시 유저가 누구인지 여부가 중요하기 때문에 해당 부분에 대하여 검사를 먼저하고 삭제해준다.
+
+put기능을 스스로 만들어보는 과제!
+
+기본적으로 delete처럼 유저가 누구인지 여부를 먼저 판단하고 진행한다.
+
+```
+serializer = RoomDetailSerializer(room, data=request.data,partial=True)
+        if serializer.is_valid():
+            # category_kind must be room
+            category_pk = request.data.get('category')
+            if category_pk:
+                try:
+                    category = Category.objects.get(pk=category_pk)
+                    if category.kind == Category.CategoryKindChoices.EXPERIENCES:
+                        raise ParseError("The category kind should be 'rooms'")
+                except Category.DoesNotExist:
+                    raise ParseError("Category not found.")
+            # Amenities with transaction
+            try:
+                with transaction.atomic():
+                    # 1. category update
+                    if category_pk:
+                        updated_room = serializer.save(category = category)
+                    else:
+                        updated_room = serializer.save()
+
+                    # 2. amenities update
+                    amenities = request.data.get('amenities')
+                    if amenities:
+                        # 2.1 update = delete + post
+                        room.amenities.clear()
+                        
+                        for amenity_pk in amenities:
+                            amenity = Amenity.objects.get(pk=amenity_pk)
+                            room.amenities.add(amenity)
+                    else:
+                        room.amenities.clear()
+
+                    return Response(RoomDetailSerializer(room).data)
+            except Exception:
+                print(Exception)
+                raise ParseError("Amenity not found")
+        else:
+            Response(serializer.errors)
+```
+
+[코드참고](https://github.com/daveg7lee/airbnb-clone-backend/commit/b50b15dba46877a5afb64832423dc6cc5cce4491)
 
 </details>
