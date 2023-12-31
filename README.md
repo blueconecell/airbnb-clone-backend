@@ -2165,3 +2165,29 @@ class RoomListSerializer(ModelSerializer):
 ```
 
 </details>
+
+<details>
+<summary>#11.12 Serializer Context (06:43)</summary>
+
+**context인자로 serializer에게 원하는 내용 전달하기**
+
+`serializer = RoomDetailSerializer(room,context={"request":request},)`
+
+views.py의 get메서드의 serializer에 context인자로 request를 주고, 
+
+```
+is_owner = serializers.SerializerMethodField()
+
+def get_is_owner(self,room):
+    request = self.context["request"]
+    return room.owner == request.user
+```
+
+serializer에서 위 코드처럼 메서드를 만들어 방의 주인과 현재 로그인한 유저가 같은지 확인할 수 있게 하는 메서드를 만들 수 있다.
+
+이런 기능을 해당 유저가 좋아요를 눌렀는지 아닌지 확인할 때 사용할 수 있다.
+
+
+
+
+</details>
