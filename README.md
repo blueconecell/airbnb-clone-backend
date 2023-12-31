@@ -2266,8 +2266,8 @@ room = self.get_object(pk)
 serializer = ReviewSerializer(room.reviews.all()[start:end],many=True,)
 ```
 
-room.reviews.all()을 리스트로 가져오기때문에 start~end로 슬라이싱이 가능하다.
-슬라이싱하면 자동으로 장고는 db로 sql offset~limit문을 전송한다.
+room.reviews.all()을 리스트로 가져오기때문에 start ~ end로 슬라이싱이 가능하다.
+슬라이싱하면 자동으로 장고는 db로 sql offset ~ limit문을 전송한다.
 
 </details>
 
