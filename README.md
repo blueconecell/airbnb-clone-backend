@@ -2189,9 +2189,6 @@ serializer에서 위 코드처럼 메서드를 만들어 방의 주인과 현재
 
 </details>
 
-
-
-
 <details>
 <summary>#11.13 Reverse Serializers (08:13)</summary>
 
@@ -2219,6 +2216,57 @@ class ReviewSerializer(ModelSerializer):
 
 역접근자 덕분에 room.views 뿐만으로 review까지 접근할 수 있다.
 
-하지만 방 하나는 수만개 이상의 리뷰를 가질 수 있기 때문에 엄청난 자원낭비를 초래할 수 있다. 그래서 pagination 기능을 사용할 수 있다.
+하지만 방 하나는 수만개 이상의 리뷰를 가질 수 있기 때문에 엄청난 자원낭비를 초래할 수 있다. 그래서 Pagination 기능을 사용할 수 있다.
+
+</details>
+
+<details>
+<summary>#11.14 Pagination (18:37)</summary>
+
+**리뷰 페이지 기능**
+
+역접근자로 리뷰를 가져오게되면 리뷰의 개수가 너무 많은 상황에서 데이터베이스에게 엄청난 부담이 될 수 있다. 따라서 URL을 하나 더 파서 페이지마다 리뷰가 나오게 만들 것이다.
+
+`path("<int:pk>/reviews",views.RoomReviews.as_view()),`
+
+```
+class RoomReviews(APIView):
+
+    def get_object(self, pk):
+        try:
+            return Room.objects.get(pk=pk)
+        except Room.DoesNotExist:
+            raise NotFound
+
+    def get(self, request, pk):
+        room = self.get_object(pk)
+        serializer = ReviewSerializer(room.reviews.all(),many=True,)
+        return Response(serializer.data)
+```
+
+url을 추가하고 방 리뷰만 가져오게 리뷰 클래스를 만들어준다.
+
+url에 쿼리로 `reviews?page=2` 이런식으로 몇번 페이지인지 받고 그 페이지를 보여줄 것이다. 먼저 페이지 번호를 검증하고 가져온다.
+
+```
+try:
+    page = request.query_params.get("page",1)
+    page = int(page)
+except ValueError:
+    page = 1
+```
+
+검증 후 페이지 크기에 따라 리뷰들을 보여준다.
+
+```
+page_size = 5
+start = (page-1)*page_size
+end = start+page_size
+room = self.get_object(pk)
+serializer = ReviewSerializer(room.reviews.all()[start:end],many=True,)
+```
+
+room.reviews.all()을 리스트로 가져오기때문에 start~end로 슬라이싱이 가능하다.
+슬라이싱하면 자동으로 장고는 db로 sql offset~limit문을 전송한다.
 
 </details>
