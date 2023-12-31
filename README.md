@@ -2187,7 +2187,38 @@ serializer에서 위 코드처럼 메서드를 만들어 방의 주인과 현재
 
 이런 기능을 해당 유저가 좋아요를 눌렀는지 아닌지 확인할 때 사용할 수 있다.
 
+</details>
 
 
+
+
+<details>
+<summary>#11.13 Reverse Serializers (08:13)</summary>
+
+**역접근자 serializer**
+
+reverse accessor는 외래키를 통해 연결되어 있는 것들을 역접근자로 찾아내는 방법이다.
+
+각 방들의 리뷰들을 역 접근 serializer로 접근해보도록 하겠다.
+
+먼저 리뷰의 serializer를 간단히 만들어 놓는다.
+
+```
+from rest_framework.serializers import ModelSerializer
+
+from .models import Review
+
+
+class ReviewSerializer(ModelSerializer):
+    class Meta:
+        model = Review
+        fields = "__all__"
+```
+
+그런다음 room의 serializer으로 돌아와 `reviews = ReviewSerializer(many=True, read_only=True)`를 추가해주면 리뷰들을 볼 수 있다.
+
+역접근자 덕분에 room.views 뿐만으로 review까지 접근할 수 있다.
+
+하지만 방 하나는 수만개 이상의 리뷰를 가질 수 있기 때문에 엄청난 자원낭비를 초래할 수 있다. 그래서 pagination 기능을 사용할 수 있다.
 
 </details>
