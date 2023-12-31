@@ -2270,3 +2270,17 @@ room.reviews.all()을 리스트로 가져오기때문에 start~end로 슬라이�
 슬라이싱하면 자동으로 장고는 db로 sql offset~limit문을 전송한다.
 
 </details>
+
+<details>
+<summary>Amenities 페이지 기능 만들기</summary>
+
+**Amenities 페이지 기능**
+
+장고의 paginatorl 모듈을 이용하여 더 편하게 만들 수 있다.
+
+마지막 페이지에 남는 몇개의 항목들은 마지막에 붙여서 더 길게 만들어줄 수도 있다.(orphans인자)
+
+마지막 페이지보다 더 큰 수가 입력되면 가장 마지막 페이지를 보여주기도 한다.
+
+
+</details>

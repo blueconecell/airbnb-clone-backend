@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.core.paginator import Paginator
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -164,10 +165,6 @@ class RoomDetail(APIView):
         return Response(status=HTTP_204_NO_CONTENT)
 
 class RoomReviews(APIView):
-
-
-
-
     def get_object(self, pk):
         try:
             return Room.objects.get(pk=pk)
@@ -182,10 +179,34 @@ class RoomReviews(APIView):
             page = 1
 
         page_size = 5
-        start = (page-1)*page_size
-        end = start+page_size
+        # start = (page-1)*page_size
+        # end = start+page_size
+
         room = self.get_object(pk)
-        serializer = ReviewSerializer(room.reviews.all()[start:end],many=True,)
+        review_paginator = Paginator(room.reviews.all(), page_size, orphans=4)
+        serializer = ReviewSerializer(review_paginator.get_page(page),many=True,)
         return Response(serializer.data)
         
 
+class RoomAmenities(APIView):
+    def get_object(self, pk):
+        try:
+            return Room.objects.get(pk=pk)
+        except Room.DoesNotExist:
+            raise NotFound
+    
+    def get(self, request, pk):
+        try:
+            page = request.query_params.get("page",1)
+            page = int(page)
+        except ValueError:
+            page = 1
+
+        page_size = 5
+        # start = (page-1)*page_size
+        # end = start+page_size
+
+        room = self.get_object(pk)
+        amenities_paginator = Paginator(room.amenities.all(), page_size, orphans=4)
+        serializer = AmenitySerializer(amenities_paginator.get_page(page),many=True,)
+        return Response(serializer.data)
