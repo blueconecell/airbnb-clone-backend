@@ -2134,3 +2134,34 @@ serializer = RoomDetailSerializer(room, data=request.data,partial=True)
 [코드참고](https://github.com/daveg7lee/airbnb-clone-backend/commit/b50b15dba46877a5afb64832423dc6cc5cce4491)
 
 </details>
+
+<details>
+<summary>#11.11 SerializerMethodField (07:32)</summary>
+
+**serializer에 추가필드 넣기**
+
+`from rest_framework import serializers` 를 먼저 임포트 해온 뒤, `RoomDetailSerializer` 내부 `Meta` 클래스 위에 다음 코드를 만들어준다.
+
+```
+rating = serializers.SerializerMethodField()
+
+def get_rating(self, room):
+    return room.rating()
+```
+
+여기서 rating에 관한 메서드를 만들어 줄때는 반드시 `get_`+`이름` 형식으로 만들어줘야한다. 그리고 메서드는 인자를 2개를 받는다. Meta에 지정해준 모델클래스가 만든 객체를 자동으로 인자로 받는다.
+
+`RoomListSerializer`에도 똑같은 rating기능을 만들어 주려면 같은 코드를 적어주면 된다. 여기서 fields에 추가도 해줘야 보이게 된다.
+
+```
+class RoomListSerializer(ModelSerializer):
+    rating = serializers.SerializerMethodField()
+
+    def get_rating(self, room):
+        return room.rating()
+    class Meta:
+        model = Room
+        fields = ("pk","name","country","city","price","rating")
+```
+
+</details>
