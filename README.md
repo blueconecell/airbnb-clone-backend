@@ -2419,3 +2419,27 @@ def post(self, request, pk):
 post기능을 완료한다.
 
 </details>
+<details>
+<summary>#11.19 Wishlists (13:26)</summary>
+
+**위시리스트 만들기**
+
+모든 위시리스트를 가져올 필요없이 해당 유저의 것만 가져오기 위해 filter를 사용한다.
+
+`context={"request":request},`
+
+wishlist의 serializer, urls, views를 만들어준다.
+
+`rooms = RoomListSerializer(many=True, read_only=True,)` serializer를 만들때 이 코드를 사용하여 해당 유저의 방을 볼 수 있게 한다.
+
+```
+def get(self, request):
+    all_wishlists = Wishlist.objects.filter(user = request.user)
+    print('request.user',request.user)
+    serializer = WishlistSerializer(all_wishlists,many=True,context={"request":request},)
+
+    return Response(serializer.data)
+```
+
+정보를 가져올때, context인자를 가져와야한다. RoomListSerializer는 필요로하는 인자이기 때문이다.
+</details>
