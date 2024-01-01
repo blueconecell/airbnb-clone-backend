@@ -2394,3 +2394,28 @@ if not request.user.is_authenticated:
 `from rest_framework.permissions import IsAuthenticated`을 가져와서 `permission_classes = [IsAuthenticated]` 를 클래스 안에 선언해놓으면 위 코드를 생략할 수 있다.
 
 </details>
+<details>
+<summary>#11.18 Reviews (10:39)</summary>
+
+**리뷰 기능 만들기**
+
+rooms/1/reviews 경로로 post api를 만드는 것이 /api/v1/reviews/~ 처럼 만드는 것보다 더 직관적이고 자세하여서 좋다.
+
+post 요청을 보내기 위해 검증을 받아야 한다. `permission_classes = [IsAuthenticatedOrReadOnly]`를 추가해준다.
+
+rooms 경로부터 리뷰를 생성하기 때문에 serializer에서 유저와 payload, rating 필드만 보여줘야한다. 필드를 `fields = ("user","payload","rating",)`수정한다. 그리고 유저가 foreign key로 묶여있기 때문에 `user = TinyUserSerializer(read_only=True)` 로 유저의 정보를 조금 보여주도록 한다.
+
+```
+def post(self, request, pk):
+    serializer = ReviewSerializer(data=request.data)
+    if serializer.is_valid():
+        review = serializer.save(user=request.user,room=self.get_object(pk),)
+        serializer = ReviewSerializer(review)
+        return Response(serializer.data)
+    else:
+        return Response(serializer.errors)
+```
+
+post기능을 완료한다.
+
+</details>
