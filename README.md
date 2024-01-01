@@ -2373,5 +2373,24 @@ class RoomPhotos(APIView):
             return Response(serializer.errors)
 ```
 
+</details>
+
+<details>
+<summary>#11.17 permission_classes (13:22)</summary>
+
+**사진 삭제, 검증된 유저 클래스**
+
+사진을 삭제할때 room으로부터 삭제하는지, media로부터 삭제하는지 정해야 한다.
+
+media로부터 삭제하도록 한다. url을 추가하고 view를 만들어준다.
+
+```
+if not request.user.is_authenticated:
+    raise NotAuthenticated
+```
+
+이 부분은 유저가 검증된 상태인지 확인하는 것인데 많이 반복된다.
+
+`from rest_framework.permissions import IsAuthenticated`을 가져와서 `permission_classes = [IsAuthenticated]` 를 클래스 안에 선언해놓으면 위 코드를 생략할 수 있다.
 
 </details>
