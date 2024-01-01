@@ -144,5 +144,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Auth
 
-# 커스터마이징한 유저를 django에게 인지시키기
+    # 커스터마이징한 유저를 django에게 인지시키기
 AUTH_USER_MODEL = "users.User"
+
+# 이미지 저장경로 지정해주기
+    # 지정해주지 않음 폴더 밖에 덩그러니 생성됨
+MEDIA_ROOT = "uploads"
+
+MEDIA_URL = "user-uploads/"
+
+# pagination size setting
+PAGE_SIZE = 5

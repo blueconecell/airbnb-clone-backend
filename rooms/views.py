@@ -1,5 +1,6 @@
 from django.db import transaction
 from django.core.paginator import Paginator
+from django.conf import settings
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -178,7 +179,7 @@ class RoomReviews(APIView):
         except ValueError:
             page = 1
 
-        page_size = 5
+        page_size = settings.PAGE_SIZE
         # start = (page-1)*page_size
         # end = start+page_size
 
@@ -202,7 +203,7 @@ class RoomAmenities(APIView):
         except ValueError:
             page = 1
 
-        page_size = 5
+        page_size = settings.PAGE_SIZE
         # start = (page-1)*page_size
         # end = start+page_size
 
@@ -210,3 +211,8 @@ class RoomAmenities(APIView):
         amenities_paginator = Paginator(room.amenities.all(), page_size, orphans=4)
         serializer = AmenitySerializer(amenities_paginator.get_page(page),many=True,)
         return Response(serializer.data)
+
+class RoomPhotos(APIView):
+    
+    def post(self, request, pk):
+        pass

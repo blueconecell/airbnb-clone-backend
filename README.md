@@ -2284,3 +2284,43 @@ room.reviews.all()을 리스트로 가져오기때문에 start ~ end로 슬라�
 
 
 </details>
+
+<details>
+<summary>#11.15 File Uploads (12:37)</summary>
+
+**사진 파일 업로드**
+
+이미 만들어둔 Photo 모듈로 사진을 업로드 하게되면 우리 프로젝트 파일안에 대충 생성되게 된다. 
+
+config > settings.py에 가서 설정을 해줌으로 파일이 저장될 폴더를 만들어주고 경로를 지정해줄 수 있다. 그리고 사진 파일에 접근할 때 URL경로도 지정해줄 수 있다.
+
+```
+MEDIA_ROOT = "uploads"
+
+MEDIA_URL = "user-uploads/"
+```
+
+세팅 파일에 위 코드를 만들어준다
+
+`from django.conf import setting` 로 setting의 변수들을 가져올 수 있다. api 토큰같은 것을 저장하여 변수로 사용가능하다.
+
+```
+from django.conf.urls.static import static
+from django.conf import settings
+
+urlpatterns = [
+    path("", include("rooms.urls")), # 임시
+    path('admin/', admin.site.urls),
+    path('api/v1/rooms/', include("rooms.urls")),
+    path('api/v1/categories/', include('categories.urls')),
+    path('api/v1/experiences/',include('experiences.urls')),
+] + static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
+```
+
+위 2개 모듈을 먼저 임포트 해오고 전역으로 세팅파일에서 만들었던 이미지 저장경로와 API URL을 가져온다.
+
+이 방식을 추가적으로 pagination에서 page size를 지정해주는 방법으로 활용할 수 있다.
+
+하지만 이 방법은 보안에 취약하기 때문에 사용하면 안되는 방법이다.
+
+</details>

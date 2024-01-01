@@ -2,7 +2,7 @@ from django.db import models
 from common.models import CommonModel
 
 
-class Media(CommonModel):
+class Photo(CommonModel):
     file = models.ImageField()
     description = models.CharField(
         max_length=140,
@@ -12,14 +12,14 @@ class Media(CommonModel):
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name="medias",
+        related_name="Photo",
     )
     experience = models.ForeignKey(
         "experiences.Experience",
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name="medias",
+        related_name="Photo",
     )
 
     def __str__(self) -> str:

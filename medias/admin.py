@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Media, Video
+from .models import Photo, Video
 
-@admin.register(Media)
+@admin.register(Photo)
 class MediaAdmin(admin.ModelAdmin):
     pass
 @admin.register(Video)
