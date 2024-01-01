@@ -2324,3 +2324,54 @@ urlpatterns = [
 하지만 이 방법은 보안에 취약하기 때문에 사용하면 안되는 방법이다.
 
 </details>
+
+
+<details>
+<summary>#11.16 Upload Photo (10:31)</summary>
+
+**사진 업로드**
+
+다른 서버로 사진을 업로드 하는 방법을 사용하면 보안문제 해결가능하다.
+
+파일은 클라우드에 올릴 예정이라 Media의 FileField를 UrlField로 바꿀 것이다.
+
+사진을 업로드 할수 있는 유저의 검증을 곁들여 post요청을 마무리 짓는다. 먼저 photo serializer를 만든다.
+
+```
+from rest_framework.serializers import ModelSerializer
+from .models import Photo
+
+class PhotoSerializer(ModelSerializer):
+    class Meta:
+        model = Photo
+        fields = ("pk","file","description",)
+```
+
+그리고 이것을 이용하여 완성한다.
+
+```
+class RoomPhotos(APIView):
+
+    def get_object(self, pk):
+        try:
+            return Room.objects.get(pk=pk)
+        except Room.DoesNotExist:
+            raise NotFound
+
+    def post(self, request, pk):
+        room = self.get_object(pk)
+        if not request.user.is_authenticated:
+            raise NotAuthenticated
+        if request.user != room.owner:
+            raise PermissionDenied
+        serializer = PhotoSerializer(data=request.data)
+        if serializer.is_valid():
+            photo = serializer.save(room=room)
+            serializer = PhotoSerializer(photo)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+```
+
+
+</details>
