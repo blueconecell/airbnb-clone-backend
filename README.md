@@ -2442,4 +2442,47 @@ def get(self, request):
 ```
 
 정보를 가져올때, context인자를 가져와야한다. RoomListSerializer는 필요로하는 인자이기 때문이다.
+
+</details>
+
+<details>
+<summary>#11.20 Wishlist (17:12)</summary>
+
+**위시리스트 세부기능 만들기**
+
+로그인한 유저의 위시리스트만 보여줘야 함에 주의한다. 그리고 위시리스트의 세부정보를 가져올때는 serializer에 context={"request": request}, 를 포함시켜줘야한다.
+
+위시리스트를 수정하는 기능을 위해서는 `위시리스트 번호/rooms/방번호` 형식으로 만드는 것이 변수를 활용하기 좋다.
+
+```
+class WishlistToggle(APIView):
+
+    def get_list(self,pk, user):
+        try:
+            return Wishlist.objects.get(pk=pk, user=user)
+        except Wishlist.DoesNotExist:
+            raise NotFound
+    
+    def get_room(self,pk):
+        try:
+            return Room.objects.get(pk=pk)
+        except Room.DoesNotExist:
+            raise NotFound
+    
+    def put(self, request, pk, room_pk):
+        wishlist = self.get_list(pk, request.user)
+        room = self.get_room(room_pk)
+
+        if wishlist.rooms.filter(pk=room.pk).exists():
+            wishlist.rooms.remove(room)
+        else:
+            wishlist.rooms.add(room)
+        return Response(status=HTTP_200_OK)
+```
+
+위시리스트에 put메서드로 요청을 보내면 2가지 기능중 하나가 동작한다.
+
+1. 만약 위시리스트에 존재하지 않는 방이라면 방을 위시리스트에 추가한다.
+2. 위시리스트에 이미 존재하는 방이라면 방을 위시리스트에서 삭제한다.
+
 </details>
