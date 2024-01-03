@@ -2584,3 +2584,68 @@ config에 명시한 서버 로컬 시간에 맞추기 위해서 `now = timezone.
 그리고 지금 시간보다 과거의 booking들은 get요청으로 가져오지 않는다. check_out 기준으로 조금 수정하여 만들었다.
 
 </details>
+
+
+<details>
+<summary>#11.23 Create a Booking (16:55)</summary>
+
+**예약 기능 만들기**
+
+booking의 몇가지 필드들은 조건에 따라 필수가 될 수도, 아닐 수도 있다.
+
+따라서 보여주기용 serializer와 생성용 serializer를 따로 만들는 방법을 사용한다.
+
+room생성 시리얼라이저를 만들고, 체크인, 체크아웃을 필수로 바꿔주기 위해 오버라이딩한다.
+
+```
+class CreateRoomBookingSerializer(ModelSerializer):
+    
+    check_in = serializers.DateField()
+    check_out = serializers.DateField()
+    
+    class Meta:
+        model = Booking
+        fields = (
+            "check_in",
+            "check_out",
+            "guests",
+                )
+```
+
+본격적으로 booking을 생성하기 전에 몇가지 조건들을 제한해줘야 한다. 시리얼라이저의 `is_valid()`를 믿을 수 없는 조건이 존재한다. 날짜에 대한 조건 설정을 해야한다.
+
+이것을 view에서 만들어 줄 수도 있지만 시리얼라이즈에서 만들어주는 방법도 있다.
+
+serializer에서 now를 가져와서 value와 비교할 수 있는 이유는 둘다 type이 datetime이기 때문에다.
+
+```
+class CreateRoomBookingSerializer(ModelSerializer):
+    
+    check_in = serializers.DateField()
+    check_out = serializers.DateField()
+    
+    class Meta:
+        model = Booking
+        fields = (
+            "check_in",
+            "check_out",
+            "guests",
+                )
+    def validate_check_in(self, value):
+        now = timezone.localtime(timezone.now()).date()
+        if now > value:
+            raise serializers.ValidationError("Can't book in the past!")
+        return value
+
+    def validate_check_out(self, value):
+        now = timezone.localtime(timezone.now()).date()
+        if now > value:
+            raise serializers.ValidationError("Can't book in the past!")
+        return value
+```
+
+체크인, 체크아웃이 미래인지 확인하는 검증절차를 serializer에 적었고, 추가적으로 체크인 -> 체크아웃 순서인지, 체크인 하려고 하는 기간에 다른 사람이 체크인 했는지 여부를 통하여 검증 과정을 추가해줘야 한다.
+
+
+</details>
+
