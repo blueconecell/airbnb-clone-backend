@@ -2509,3 +2509,78 @@ def get_is_liked(self,room):
 
 </details>
 
+<details>
+<summary>#11.22 Bookings (16:34)</summary>
+
+**예약 기능 만들기**
+
+예약은 기간이 존재한다. 예약이 잡힌 방은 예약된 기간동안 다른사람이 예약하지 못하도록 제한을 걸어야 한다.
+
+```
+def get_object(self, pk):
+    try:
+        return Room.objects.get(pk=pk)
+    except Room.DoesNotExist:
+        raise NotFound
+
+def get(self, request, pk):
+    room = self.get_object(pk)
+    bookings = Booking.objects.filter(room=room)
+```
+
+이 코드는 방이 존재하지 않는다면 유저에게 알려준다.
+
+```
+def get(self, request, pk):
+    bookings = Booking.objects.filter(room__pk=pk)
+```
+
+이 코드는 위 코드위 동일한 기능이지만 방이 존재하지 않아도 bookings변수에 빈 리스트를 저장하는 것으로 끝나기 때문에 유저에게 방 존재여부를 알려주지 않는다. 따라서 어떻게 할지 정해볼 수 있다.
+
+Booking의 시리얼라이저를 만드는데 일반 유저가 볼 public버전과 방 주인이 볼 pivate 버전 2개를 만들 것이다.
+
+```
+from rest_framework.serializers import ModelSerializer
+from .models import Booking
+
+class PublicBookingSerializer(ModelSerializer):
+    class Meta:
+        model = Booking
+        fields = ("pk",
+                "check_in",
+                "check_out",
+                "experience_time",
+                "guests",
+                )
+```
+
+`from django.utils import timezone` 을 사용하여 날짜+시간을 사용한다. 파이썬 기본 모듈보다는 장고의 모듈을 사용하는 것이 config파일의 setting을 활용할 수 있어서 좋다.
+
+
+```
+class RoomBookings(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_object(self, pk):
+        try:
+            return Room.objects.get(pk=pk)
+        except Room.DoesNotExist:
+            raise NotFound
+
+    def get(self, request, pk):
+        room = self.get_object(pk)
+        now = timezone.localtime(timezone.now())
+
+        bookings = Booking.objects.filter(room=room,
+            kind=Booking.BookingKindChoices.ROOM,
+            check_out__gt=now,            
+            )
+        serializer = PublicBookingSerializer(bookings, many=True)
+        return Response(serializer.data)
+```
+
+config에 명시한 서버 로컬 시간에 맞추기 위해서 `now = timezone.localtime(timezone.now()).date()` 처럼 코드를 짜주고 날짜만 필요한 경우 `.date()`로 날짜만 가져온다. 시간도 중요하다 생각하면 date빼줘도 된다.
+
+그리고 지금 시간보다 과거의 booking들은 get요청으로 가져오지 않는다. check_out 기준으로 조금 수정하여 만들었다.
+
+</details>
