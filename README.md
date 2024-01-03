@@ -2486,3 +2486,26 @@ class WishlistToggle(APIView):
 2. 위시리스트에 이미 존재하는 방이라면 방을 위시리스트에서 삭제한다.
 
 </details>
+
+
+<details>
+<summary>#11.21 is_liked (06:59)</summary>
+
+**좋아요 기능 만들기**
+
+ManyToMany 필드에 필터를 사용할 때 쉬운 방법이 있다.
+먼저 우리가 찾고자 하는 유저의 모든 위시리스트를 가져온 다음 그 위시리스트에서 우리가 찾고자 하는 방의 번호를 찾고싶은 상황이 있다.
+
+```
+def get_is_liked(self,room):
+    request = self.context['request']
+    return Wishlist.object.filter(
+        user=request.user,
+        rooms__pk=room.pk
+        ).exists()
+```
+
+`__`를 사용하여 방의 pk뿐만 아니라 이름을 이용하여 필터를 넣을 수 있다.
+
+</details>
+
