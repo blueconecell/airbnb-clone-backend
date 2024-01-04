@@ -2649,3 +2649,43 @@ class CreateRoomBookingSerializer(ModelSerializer):
 
 </details>
 
+<details>
+<summary>#11.24 Validate Booking (15:51)</summary>
+
+**예약 검증하기**
+
+```
+    def validate(self, data):
+
+        # 체크인 시간은 체크 아웃 시간보다 빨라야 한다.
+        if data['check_out'] <= data['check_in']:
+            raise serializers.ValidationError("Check in should be smaller than check out.")
+        
+    
+        # 체크인 시간과 체크아웃 시간 사이에 또다른 booking이 존재하면 안된다.
+        # 물론 체크인 또는 체크아웃 중 하나라도 걸쳐있는 booking 또한 존재하면 안된다.
+        if Booking.objects.filter(
+            check_in__lte=data['check_out'],
+            check_out__gte=data['check_in']
+        ).exists():
+            raise serializers.ValidationError('Those (or some) of those dates are already taken.')
+
+        return data
+```
+
+2가지 포인트에 대하여 검증해준다.
+
+1. 체크인 시간 < 체크아웃 시간
+2. 다른 예약 시간과 겹치면 안된다.
+
+2번 포인트에 대해 필터로 정의해줄 때 까다로운 부분이 있었다. 
+
+1. 원하는 체크인보다 미래에 누군가의 체크아웃 존재
+2. 원하는 체크아웃보다 과거에 누군가의 체크인 존재
+   
+이 2 부분에 대해 검증을 해주면 된다. 그리고 체크아웃 하는 시점에 체크인을 하는 경우가 많다보니 아래처럼 비교할때 equal을 빼줘도 된다.
+
+`if Booking.objects.filter(check_in__lt=data['check_out'],check_out__gt=data['check_in']).exists():`
+
+</details>
+
