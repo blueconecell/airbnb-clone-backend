@@ -2689,3 +2689,29 @@ class CreateRoomBookingSerializer(ModelSerializer):
 
 </details>
 
+<details>
+<summary>#11.25 Booking Completed (07:20)</summary>
+
+**예약 기능 완성!**
+
+검증을 view에서 만들어주는 것이 좋은지 serializer에서 validation 함수로 만들어 주는 것이 좋은지 생각해볼 필요가 있다.
+
+마지막으로 post부분의 저장 부분을 완성시킨다. 반드시 채워야 하는 필드들이 존재하기 때문에 저장할때 추가해주고 저장시켜준다.
+
+```
+def post(self, request, pk):
+    room = self.get_object(pk)
+    serializer = CreateRoomBookingSerializer(data=request.data)
+    if serializer.is_valid():
+        booking = serializer.save(
+            room=room,
+            user=request.user,
+            kind=Booking.BookingKindChoices.ROOM,
+        )
+        serializer = PublicBookingSerializer(booking)
+        return Response(serializer.data)
+    else:
+        return Response(serializer.errors)
+```
+
+</details>
