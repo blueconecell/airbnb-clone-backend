@@ -2715,3 +2715,53 @@ def post(self, request, pk):
 ```
 
 </details>
+<details>
+<summary>#12.0 User Profile (14:31)</summary>
+
+**유저기능 개발 시작**
+
+```
+class PrivateUserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        exclude = (
+            "password",
+            "is_superuser",
+            "id",
+            "is_staff",
+            "is_active",
+            "first_name",
+            "last_name",
+            "groups",
+            "user_permissions",
+        )
+```
+
+유저에게 보여줄 상세한 user정보를 위한 serializer를 만들어준다.
+
+`    avatar = models.URLField(blank=True)` 아바타의 이미지는 url로 받아올 예정이므로 바꿔준후 마이그래이션 작업을 해준다.
+
+```
+class Me(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        serializer = serializers.PrivateUserSerializer(user)
+        
+        return Response(serializer.data)
+    
+    def put(self, request):
+        user = request.user
+        serializer = serializers.PrivateUserSerializer(user, data=request.data,partial=True,)
+        if serializer.is_valid():
+            user = serializer.save()
+            serializer = serializers.PrivateUserSerializer(user)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+```
+
+개인계정을 위한 기능 일부 완성
+
+</details>
