@@ -1,4 +1,5 @@
 from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 
 from .models import User
 
@@ -23,3 +24,25 @@ class PrivateUserSerializer(ModelSerializer):
             "groups",
             "user_permissions",
         )
+
+class PublicUserSerializer(ModelSerializer):
+
+    total_reviews = serializers.SerializerMethodField()
+    total_rooms = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields=(
+            "username",
+            "avatar",
+            "name",
+            "language",
+            "currency",
+            "total_reviews",
+            "total_rooms",
+        )
+
+    def get_total_reviews(self,user):
+        return user.reviews.count()
+    def get_total_rooms(self,user):
+        return user.rooms.count()

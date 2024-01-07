@@ -1,11 +1,17 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound, NotAuthenticated, ParseError,PermissionDenied
-from rest_framework.status import HTTP_204_NO_CONTENT
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
 
 from . import serializers
+from .models import User
+
+from reviews.models import Review
+from reviews.serializers import ReviewSerializer
+from rooms.models import Room
+from rooms.serializers import RoomListSerializer
 
 class Me(APIView):
     permission_classes = [IsAuthenticated]
@@ -43,3 +49,46 @@ class Users(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
+
+class PublicUser(APIView):
+    
+    def get(self,request, username):
+
+        try:
+            user = User.objects.get(username = username)
+        except User.DoesNotExist:
+            raise NotFound
+        
+        serializer = serializers.PublicUserSerializer(user)
+        return Response(serializer.data)
+    
+class PublicUserReviews(APIView):
+    def get(self, request, username):
+        reviews = Review.objects.filter(user__username=username)
+        serializer = ReviewSerializer(reviews, many=True,)
+        return Response(serializer.data)
+
+class PublicUserRooms(APIView):
+    def get(self, request, username):
+        rooms = Room.objects.filter(user__username=username)
+        serializer = RoomListSerializer(rooms, many=True,context={"request":request},)
+        return Response(serializer.data)
+
+
+    
+class ChangePassword(APIView):
+
+    permission_classes = [IsAuthenticated]
+    
+    def put(self,request):
+        user = request.user
+        old_pw = request.data.get('old_password')
+        new_pw = request.data.get('new_password')
+        if not old_pw or not new_pw:
+            raise ParseError
+        if user.check_password(old_pw):
+            user.set_password(new_pw)
+            user.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            raise ParseError

@@ -2799,3 +2799,63 @@ class Users(APIView):
 ```
 
 </details>
+<details>
+<summary>#12.2 Change Password (13:21)</summary>
+
+**pw 변경 기능**
+
+```
+path('me',views.Me.as_view()),
+path('<string:username>',views.PublicUser.as_view()),
+```
+
+이 순서 말고 뒤집은 순서로 놔두게 되면, me를 username으로 착각하게 되어 오류가 발생한다. 하지만 me라는 이름을 가진 유저가 등장하게 되면 또 문제가 된다.
+
+따라서 인스타그램처러 유저이름 앞에 `@`를 사용해주는 방식으로 문제를 해결한다.
+
+```
+path('@<str:username>',views.PublicUser.as_view()),
+path('me',views.Me.as_view()),
+```
+
+```
+class PublicUser(APIView):
+    
+    def get(self,request, username):
+
+        try:
+            user = User.objects.get(username = username)
+        except User.DoesNotExist:
+            raise NotFound
+        
+        serializer = serializers.PrivateUserSerializer(user)
+        return Response(serializer.data)
+```
+
+public유저를 위한 serializer를 만들어주는 것이 좋다.
+
+`set_password`는 비밀번호를 해시할때만 적용되기 때문에 따로 `.save()`메서드로 저장해줘야한다.
+
+```
+class ChangePassword(APIView):
+
+    permission_classes = [IsAuthenticated]
+    
+    def put(self,request):
+        user = request.user
+        old_pw = request.data.get('old_password')
+        new_pw = request.data.get('new_password')
+        if not old_pw or not new_pw:
+            raise ParseError
+        if user.check_password(old_pw):
+            user.set_password(new_pw)
+            user.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            raise ParseError
+```
+
+
+
+
+</details>

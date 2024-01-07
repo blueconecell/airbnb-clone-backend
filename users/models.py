@@ -53,3 +53,4 @@ class User(AbstractUser):
         max_length=5,
         choices=CurrencyChoices.choices,
     )
+
