@@ -2765,3 +2765,37 @@ class Me(APIView):
 개인계정을 위한 기능 일부 완성
 
 </details>
+
+<details>
+<summary>#12.1 Create User (11:52)</summary>
+
+**유저 추가 기능**
+
+먼저 만들었던 `Me`에는 검증 행위를 진행하지 않고 있다. 예를 들면, 이메일을 수정하는데 이미 존재하는 이메일로 수정했을 시 검증을 통해 제한해야하는 상황을 말한다. 이 검증은 이미 serializer가 자동을 하고 있기 때문에 따로 만들어 주지 않아도 된다.
+
+
+post할때 raw 비밀번호를 그냥 저장하면 안된다. 하지만 django는 자동으로 hash화 해준다.
+
+`user.set_password()` 라는 메서드를 통해 장고에게 hash 화를 맞긴다.
+
+```
+class Users(APIView):
+
+    def post(self, request):
+        password = request.data.get('password')
+        if not password:
+            raise ParseError
+        
+        serializer = serializers.PrivateUserSerializer(data = request.data)
+
+        if serializer.is_valid():
+            user = serializer.save()
+            user.set_password(password)
+            user.save()
+            serializer = serializers.PrivateUserSerializer(user)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+```
+
+</details>
