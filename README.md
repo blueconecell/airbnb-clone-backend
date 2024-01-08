@@ -2855,7 +2855,39 @@ class ChangePassword(APIView):
             raise ParseError
 ```
 
+</details>
 
+<details>
+<summary>#12.3 Log In and Log Out (06:46)</summary>
 
+**로그인 기능 만들기**
+
+```
+class LogIn(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        if not username or not password:
+            raise ParseError
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            return Response({"ok":'Welcome!'})
+        else:
+            return Response({"error":"wrong Password"})
+```
+
+기본적인 로그인은 다음과 같이 엄청 간단히 만들 수 있다.
+핵심적으로 `login(request, user)`를 통해 로그인한다. 
+
+```
+class LogOut(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        logout(request)
+        return Response({"ok":"bye~"})
+```
+
+로그아웃도 간단히 만들 수 있다.
 
 </details>
