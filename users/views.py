@@ -70,7 +70,7 @@ class PublicUserReviews(APIView):
 
 class PublicUserRooms(APIView):
     def get(self, request, username):
-        rooms = Room.objects.filter(user__username=username)
+        rooms = Room.objects.filter(owner__username=username)
         serializer = RoomListSerializer(rooms, many=True,context={"request":request},)
         return Response(serializer.data)
 

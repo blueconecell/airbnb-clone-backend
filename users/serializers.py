@@ -34,6 +34,7 @@ class PublicUserSerializer(ModelSerializer):
         model = User
         fields=(
             "username",
+            "email",
             "avatar",
             "name",
             "language",
