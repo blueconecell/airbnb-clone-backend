@@ -47,3 +47,6 @@ class PublicUserSerializer(ModelSerializer):
         return user.reviews.count()
     def get_total_rooms(self,user):
         return user.rooms.count()
+    
+
+    

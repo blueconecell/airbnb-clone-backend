@@ -2,11 +2,30 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
 from rest_framework.status import HTTP_204_NO_CONTENT
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from .models import Perk
-from .serializers import PerkSerializer
+
+from .models import Perk,Experience
+from .serializers import PerkSerializer,ExperienceDetailSerialier,ExperienceListSerializer
+
+class Experiences(APIView):
+    
+    def get(self, request):
+        
+        permission_classes = [IsAuthenticatedOrReadOnly]
+
+        all_experiences = Experience.objects.all()
+        serializer = ExperienceListSerializer(all_experiences, many=True, context={"request":request})
+        return Response(serializer.data)
+    
+    # def post(self, request):
+    #     serializer = ExperienceDetailSerialier(data=request.data)
+    #     if serializer.is_valid():
+    #         category_pk = request.data.get('category')
+
 
 class Perks(APIView):
+
 
     def get(self, request):
         all_perks = Perk.objects.all()

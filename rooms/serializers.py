@@ -41,9 +41,6 @@ class RoomDetailSerializer(ModelSerializer):
         model = Room
         fields = "__all__"
 
-
-
-
 class RoomListSerializer(ModelSerializer):
     rating = serializers.SerializerMethodField()
     is_owner = serializers.SerializerMethodField()

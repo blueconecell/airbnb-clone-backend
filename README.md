@@ -2891,3 +2891,21 @@ class LogOut(APIView):
 로그아웃도 간단히 만들 수 있다.
 
 </details>
+
+<details>
+<summary>#13.0 Code Challenge (02:36)</summary>
+
+**Experience 부분 code challenge**
+
+### Experience 체크리스트
+
+- [x] GET /experiences
+- [ ] POST /experiences
+- [ ] GET PUT DELETE /experiences/1
+- [x] GET /experiences/1/perks
+- [x] GET POST /perks
+- [ ] GET PUT DELETE /perks/1
+- [ ] GET POST /experiences/1/bookings
+- [ ] GET PUT DELETE /experiences/1/bookings/2
+
+</details>

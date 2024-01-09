@@ -29,4 +29,7 @@ class Review(CommonModel):
     rating = models.PositiveBigIntegerField()
 
     def __str__(self) -> str:
-        return f"{self.room} -> {self.user} / {self.rating}★"
+        if self.experience == None:
+            return f"{self.room} -> {self.user} / {self.rating}★"
+        else:
+            return f"{self.experience} -> {self.user} / {self.rating}★"
