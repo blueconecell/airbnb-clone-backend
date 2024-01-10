@@ -72,7 +72,6 @@ class Rooms(APIView):
 
     def post(self, request):
 
-        
         serializer = RoomDetailSerializer(data=request.data)
         if serializer.is_valid():
             category_pk = request.data.get("category")

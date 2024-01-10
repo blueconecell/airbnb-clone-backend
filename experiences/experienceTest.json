@@ -1,0 +1,15 @@
+{
+    "country": "test1",
+    "city": "test2",
+    "name": "test3 도서관",
+    "price": 200,
+    "address": "Seoul, Gangnam-gu, Yeongdong-daero, 513 스타필드 코엑스몰 B1",
+    "start": "00:00:00",
+    "end": "23:59:00",
+    "description": "test6",
+    "host": 1,
+    "category": 6,
+    "perks": [
+        2
+    ]
+}
