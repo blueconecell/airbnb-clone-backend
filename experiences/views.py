@@ -2,6 +2,7 @@ from django.db import transaction
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.exceptions import NotFound, NotAuthenticated, ParseError,PermissionDenied
 from rest_framework.status import HTTP_204_NO_CONTENT
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -12,11 +13,10 @@ from .serializers import PerkSerializer,ExperienceDetailSerialier,ExperienceList
 from categories.models import Category
 
 class Experiences(APIView):
-    
-    def get(self, request):
-        
-        permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
+    def get(self, request):
+    
         all_experiences = Experience.objects.all()
         serializer = ExperienceListSerializer(all_experiences, many=True, context={"request":request})
         return Response(serializer.data)
@@ -25,12 +25,13 @@ class Experiences(APIView):
         serializer = ExperienceDetailSerialier(data=request.data)
         if serializer.is_valid():
             category_pk = request.data.get('category')
+            perk_pks = request.data.get('perks')
             if not category_pk:
                 raise ParseError("Category is required")
             try:
                 category = Category.objects.get(pk=category_pk)
-                if category.kind == Category.CategoryKindChoices.ROOMS:
-                    raise ParseError("The category kind should be EXPERIENCES")
+                if category.kind != Category.CategoryKindChoices.EXPERIENCES:
+                    raise ParseError("The category's kind should be EXPERIENCES")
             except Category.DoesNotExist:
                 raise ParseError("category not found.")
             
@@ -39,24 +40,18 @@ class Experiences(APIView):
                 with transaction.atomic():
                     experience=serializer.save(host=request.user,category=category,)
                     print('experience',experience)
-                    perks = request.data.get("perks")
-                    print('perks',perks)
-                    print('perks?')
-                    print('perk test',Perk.objects.get(pk=perks[0]))
-                    print('perks?')
-                    for perk_pk in perks:
-                        print('perk !',perk)
-                        perk = Perk.objects.get(pk=perk_pk)
-                        print('add !')
-                        experience.perks.add(perk)
-                    print('end for')
-                    serializer = ExperienceDetailSerialier(experience)
-                    print('serializer',serializer)
-                    return Response(serializer.data)
-            except Exception:
+                    if perk_pks:
+                        for perk_pk in perk_pks:
+                            perk = Perk.objects.get(pk=perk_pk)
+                            experience.perks.add(perk)
+            except Perk.DoesNotExist:
                 raise ParseError("Perks not found")
+            except Exception as e:
+                raise ParseError(e)
+            serializer = ExperienceDetailSerialier(experience,context={'request':request},)
+            return Response(serializer.data)
         else:
-            return Response(serializer.errors)
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST,)
 
 class ExperienceDetail(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]

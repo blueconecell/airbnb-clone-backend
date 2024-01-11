@@ -2900,7 +2900,7 @@ class LogOut(APIView):
 ### Experience 체크리스트
 
 - [x] GET /experiences
-- [ ] POST /experiences
+- [x] POST /experiences
 - [ ] GET PUT DELETE /experiences/1
 - [x] GET /experiences/1/perks
 - [x] GET POST /perks
