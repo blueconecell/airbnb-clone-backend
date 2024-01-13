@@ -68,6 +68,60 @@ class ExperienceDetail(APIView):
         serializer = ExperienceDetailSerialier(experience, context={"request":request})
         return Response(serializer.data)
 
+    def put(self, request, pk):
+        experience = self.get_object(pk)
+        if experience.host != request.user:
+            raise PermissionDenied
+        serializer = ExperienceDetailSerialier(experience, data=request.data, partial=True)
+        if serializer.is_valid():
+            category_pk = request.data.get('category')
+            if category_pk:
+                try:
+                    category = Category.objects.get(pk=category_pk)
+                    if category.kind != Category.CategoryKindChoices.EXPERIENCES:
+                        raise ParseError("The Category kind should be 'experience'")
+                except Category.DoesNotExist:
+                    raise ParseError("Category not found.")
+            
+            # 트랜섹션 시작!
+            try:
+                with transaction.atomic():
+                    if category_pk:
+                        updated_experience = serializer.save(category=category)
+                    else:
+                        updated_experience = serializer.save()
+                    
+                    perks = request.data.get('perks')
+                    if perks:
+                        updated_experience.perks.clear()
+
+                        for perk_pk in perks:
+                            perk = Perk.objects.get(pk=perk_pk)
+                            updated_experience.perks.add(perk)
+                    else:
+                        updated_experience.perks.clear()
+                    
+            except Perk.DoesNotExist:
+                raise ParseError("Perk not found.")
+            except Exception as e:
+                raise ParseError(e)
+            serializer = ExperienceDetailSerialier(updated_experience,context={"request":request},)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+
+
+
+    
+    def delete(self, request, pk):
+        experience = self.get_object(pk)
+        if experience.host != request.host:
+            raise PermissionDenied
+        experience.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
 class Perks(APIView):
 
 

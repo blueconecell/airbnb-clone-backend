@@ -127,7 +127,7 @@ class RoomDetail(APIView):
             if category_pk:
                 try:
                     category = Category.objects.get(pk=category_pk)
-                    if category.kind == Category.CategoryKindChoices.EXPERIENCES:
+                    if category.kind != Category.CategoryKindChoices.ROOMS:
                         raise ParseError("The category kind should be 'rooms'")
                 except Category.DoesNotExist:
                     raise ParseError("Category not found.")
@@ -144,15 +144,15 @@ class RoomDetail(APIView):
                     amenities = request.data.get('amenities')
                     if amenities:
                         # 2.1 update = delete + post
-                        room.amenities.clear()
+                        updated_room.amenities.clear()
                         
                         for amenity_pk in amenities:
                             amenity = Amenity.objects.get(pk=amenity_pk)
-                            room.amenities.add(amenity)
+                            updated_room.amenities.add(amenity)
                     else:
-                        room.amenities.clear()
+                        updated_room.amenities.clear()
 
-                    return Response(RoomDetailSerializer(room).data)
+                    return Response(RoomDetailSerializer(updated_room).data)
             except Exception:
                 print(Exception)
                 raise ParseError("Amenity not found")

@@ -2901,7 +2901,7 @@ class LogOut(APIView):
 
 - [x] GET /experiences
 - [x] POST /experiences
-- [ ] GET PUT DELETE /experiences/1
+- [x] GET PUT DELETE /experiences/1
 - [x] GET /experiences/1/perks
 - [x] GET POST /perks
 - [ ] GET PUT DELETE /perks/1

@@ -9,7 +9,7 @@ from .models import Perk,Experience
 class PerkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Perk
-        fields = ("name","details","explanation")
+        fields = "__all__"
 
 class ExperienceDetailSerialier(serializers.ModelSerializer):
     host = TinyUserSerializer(read_only=True)
