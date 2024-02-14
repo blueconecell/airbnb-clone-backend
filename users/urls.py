@@ -10,8 +10,6 @@ urlpatterns = [
     path('log-in',views.LogIn.as_view()),
     path('log-out',views.LogOut.as_view()),
     path('me',views.Me.as_view()),
-    
-    
-    
+    path("jwt-login",views.JWTLogIn.as_view()),
     
 ]
