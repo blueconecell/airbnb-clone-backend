@@ -1,9 +1,10 @@
 import jwt
+from time import sleep
 from django.contrib.auth import authenticate, login,logout
 from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.exceptions import NotFound, NotAuthenticated, ParseError,PermissionDenied
+from rest_framework.exceptions import NotFound, ParseError
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
@@ -110,10 +111,14 @@ class LogIn(APIView):
             return Response({"error":"wrong Password"})
         
 class LogOut(APIView):
+
     permission_classes = [IsAuthenticated]
+
     def post(self, request):
+        print("로그아웃 테스트 request ;",request)
+        sleep(1)
         logout(request)
-        return Response({"ok":"bye~"})
+        return Response({"ok": "bye!"})
 
 class JWTLogIn(APIView):
     def post(self, request):
