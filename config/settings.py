@@ -179,3 +179,4 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+GH_SECRET = env("GH_SECRET")

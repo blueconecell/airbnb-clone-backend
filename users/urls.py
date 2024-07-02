@@ -11,5 +11,6 @@ urlpatterns = [
     path('log-out',views.LogOut.as_view()),
     path('me',views.Me.as_view()),
     path("jwt-login",views.JWTLogIn.as_view()),
+    path("github",views.GithubLogin.as_view()),
     
 ]
