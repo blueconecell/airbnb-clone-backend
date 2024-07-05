@@ -71,14 +71,17 @@ class Rooms(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-
+        print("post 요청시작!!")
+        print("request.data",request.data)
         serializer = RoomDetailSerializer(data=request.data)
+        
         if serializer.is_valid():
             category_pk = request.data.get("category")
             if not category_pk:
                 raise ParseError("Category is required.")
             try:
                 category = Category.objects.get(pk=category_pk)
+                print("category",category)
                 if category.kind == Category.CategoryKindChoices.EXPERIENCES:
                     raise ParseError("The category kind should be 'rooms'")
             except Category.DoesNotExist:
@@ -93,7 +96,7 @@ class Rooms(APIView):
                     for amenity_pk in amenities:
                         amenity = Amenity.objects.get(pk=amenity_pk)
                         room.amenities.add(amenity )
-                    serializer = RoomDetailSerializer(room)
+                    serializer = RoomDetailSerializer(room,context = {"request":request})
                     return Response(serializer.data)
             except Exception:
                 raise ParseError("Amenity not found")
