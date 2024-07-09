@@ -30,6 +30,7 @@ class CreateRoomBookingSerializer(ModelSerializer):
         return value
 
     def validate(self, data):
+        room = self.context.get("room")
 
         # 체크인 시간은 체크 아웃 시간보다 빨라야 한다.
         if data['check_out'] <= data['check_in']:
@@ -39,8 +40,9 @@ class CreateRoomBookingSerializer(ModelSerializer):
         # 체크인 시간과 체크아웃 시간 사이에 또다른 booking이 존재하면 안된다.
         # 물론 체크인 또는 체크아웃 중 하나라도 걸쳐있는 booking 또한 존재하면 안된다.
         if Booking.objects.filter(
-            check_in__lt=data['check_out'],
-            check_out__gt=data['check_in']
+            room = room , 
+            check_in__lte=data['check_out'],
+            check_out__gte=data['check_in']
         ).exists():
             raise serializers.ValidationError('Those (or some) of those dates are already taken.')
 
