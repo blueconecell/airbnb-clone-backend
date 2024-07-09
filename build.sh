@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
-# Exit on error
+# exit on error
 set -o errexit
+pip install --upgrade pip
 
-# Modify this line as needed for your package manager (pip, poetry, etc.)
 poetry install
-# pip install -r requirements.txt
-
-# Convert static asset files
+pip install --force-reinstall -U setuptools
 python manage.py collectstatic --no-input
-
-# Apply any outstanding database migrations
 python manage.py migrate
