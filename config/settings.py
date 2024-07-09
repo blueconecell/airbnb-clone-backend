@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import environ
 import os
+import sentry_sdk
 # Import the dj-database-url package at the beginning of the file
 import dj_database_url
 
@@ -204,3 +205,15 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 GH_SECRET = env("GH_SECRET")
+
+if not DEBUG:
+    sentry_sdk.init(
+        dsn="https://b32f7397ef45d20fc3e00c425443ad46@o4507570729582592.ingest.us.sentry.io/4507570739347456",
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        traces_sample_rate=1.0,
+        # Set profiles_sample_rate to 1.0 to profile 100%
+        # of sampled transactions.
+        # We recommend adjusting this value in production.
+        profiles_sample_rate=1.0,
+    )
