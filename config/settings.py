@@ -214,6 +214,8 @@ CORS_ALLOW_HEADERS = [
 GH_SECRET = env("GH_SECRET")
 
 if not DEBUG:
+    SESSION_COOKIE_DOMAIN = ".airbnbclonecodingtest.xyz"
+    CSRF_COOKIE_DOMAIN = ".airbnbclonecodingtest.xyz"
     sentry_sdk.init(
         dsn="https://b32f7397ef45d20fc3e00c425443ad46@o4507570729582592.ingest.us.sentry.io/4507570739347456",
         # Set traces_sample_rate to 1.0 to capture 100%
