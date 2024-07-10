@@ -8,7 +8,7 @@ databases:
 services:
   - type: web
     plan: free
-    name: airbnbclone
+    name: airbnb-clone-backend
     region: singapore
     runtime: python
     buildCommand: './build.sh'
