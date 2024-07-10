@@ -34,7 +34,7 @@ SECRET_KEY = env("SECRET_KEY")
 # DEBUG = True
 DEBUG = 'RENDER' not in os.environ # 배포 시
 
-ALLOWED_HOSTS = ["localhost"]
+ALLOWED_HOSTS = ["localhost","backend.airbnbclonecodingtest.xyz"]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
@@ -200,8 +200,8 @@ if DEBUG:
     CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:3000"]
     CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
 else:
-    CORS_ALLOWED_ORIGINS = ["https://airbnb-clone-frontend-xade.onrender.com"]
-    CSRF_TRUSTED_ORIGINS = ["https://airbnb-clone-frontend-xade.onrender.com"]
+    CORS_ALLOWED_ORIGINS = ["https://airbnbclonecodingtest.xyz/"]
+    CSRF_TRUSTED_ORIGINS = ["https://airbnbclonecodingtest.xyz/"]
 
 
 
